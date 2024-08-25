@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/eunomia_gen/version"
+require_relative "lib/eunomia/version"
 
 Gem::Specification.new do |spec|
   spec.name = "eunomia_gen"
-  spec.version = EunomiaGen::VERSION
+  spec.version = Eunomia::VERSION
   spec.authors = ["G Palmer"]
   spec.email = ["palmergs@gmail.com"]
 

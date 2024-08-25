@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe EunomiaGen do
+RSpec.describe Eunomia do
   it "has a version number" do
-    expect(EunomiaGen::VERSION).not_to be nil
+    expect(Eunomia::VERSION).not_to be nil
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "eunomia_gen"
+require "eunomia"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
