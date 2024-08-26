@@ -12,6 +12,8 @@ module Segment
     ss = StringScanner.new(str)
     arr = []
     until ss.eos?
+      rem = ss.rest_size
+
       seg = Eunomia::Segment::Constant.build(ss)
       arr << seg if seg
 
@@ -27,8 +29,7 @@ module Segment
       seg = Eunomia::Segment::Reference.build(ss)
       arr << seg if seg
 
-      bail -= 1
-      raise "Segment scanner in infinite loop: #{ ss.rest } (#{ ss.rest_size })" if bail < 0
+      raise "Infinite loop in scanner: #{ss.rest} (#{rem})" if ss.rest_size == rem
     end
     arr
   end
