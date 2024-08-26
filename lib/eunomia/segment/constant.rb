@@ -3,7 +3,7 @@
 module Eunomia
   module Segment
     class Constant
-      CONSTANT_MATCHER = /(\p{Blank}|\p{Punct}|:space|:comma|:period|:dot|:colon|:semicolon|:dash|:minus|:hyphen|:plus|:underscore|:quote|:apostrophe|:squote)/
+      CONSTANT_MATCHER = /(\p{Blank}|:space|:ws|:comma|:period|:dot|:colon|:semicolon|:dash|:minus|:hyphen|:plus|:underscore|:quote|:apostrophe|:squote|\p{Punct})/
 
       attr_reader :str, :value
 
