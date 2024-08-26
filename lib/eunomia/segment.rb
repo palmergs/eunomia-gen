@@ -7,11 +7,11 @@ require_relative "segment/number"
 require_relative "segment/reference"
 
 module Segment
-  def self.build str
-    print str
+  bail = 1000
+  def self.build(str)
     ss = StringScanner.new(str)
     arr = []
-    while !ss.eos?
+    until ss.eos?
       seg = Eunomia::Segment::Constant.build(ss)
       arr << seg if seg
 
@@ -27,7 +27,8 @@ module Segment
       seg = Eunomia::Segment::Reference.build(ss)
       arr << seg if seg
 
-      print "#{ ss.rest } (#{ ss.rest_size })\n"
+      bail -= 1
+      raise "Segment scanner in infinite loop: #{ ss.rest } (#{ ss.rest_size })" if bail < 0
     end
     arr
   end

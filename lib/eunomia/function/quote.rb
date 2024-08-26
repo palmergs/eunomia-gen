@@ -1,12 +1,11 @@
 module Eunomia
   module Function
     class Quote
-      def apply str
-        return '' if str.blank?
+      def apply(str)
+        return "" if str.blank?
 
-        "“#{ str.strip }”"
+        "“#{str.strip}”"
       end
     end
   end
 end
-

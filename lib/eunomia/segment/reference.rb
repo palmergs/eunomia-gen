@@ -5,20 +5,20 @@ module Eunomia
 
       attr_reader :key, :version
 
-      def initialize key, version = 0
+      def initialize(key, version = 0)
         @key = key
         @version = version
       end
 
-      def value cache
+      def value(_cache)
         Eunomia::Value.new(key)
       end
 
-      def self.build scanner
+      def self.build(scanner)
         str = scanner.scan(REFERENCE_MATCHER)
-        if str
-          new(scanner[1], scanner[2].to_i)
-        end
+        return unless str
+
+        new(scanner[1], scanner[2].to_i)
       end
     end
   end

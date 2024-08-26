@@ -1,7 +1,7 @@
 module Eunomia
   module Function
     class Upcase
-      def apply str
+      def apply(str)
         str.upcase
       end
     end

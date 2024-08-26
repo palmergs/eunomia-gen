@@ -2,15 +2,15 @@ module Eunomia
   module Segment
     class Dice
       DICE_MATCHER = %r{\[(\d+)?d(\d+)(?:([+x/-])(\d+))?\]}
-      ADD = '+'
-      MULTIPLY = 'x'
-      SUBTRACT = '-'
-      DIVIDE = '/'
+      ADD = "+"
+      MULTIPLY = "x"
+      SUBTRACT = "-"
+      DIVIDE = "/"
       OPS = [ADD, MULTIPLY, SUBTRACT, DIVIDE].freeze
 
       attr_reader :count, :range, :op, :constant
 
-      def initialize count, range, op = ADD, constant = 0
+      def initialize(count, range, op = ADD, constant = 0)
         @count = count.to_i.clamp(1, 100)
         @range = range.to_i.clamp(1, 1_000_000)
         @op = OPS.include?(op) ? op : ADD
@@ -38,16 +38,16 @@ module Eunomia
         end
       end
 
-      def value 
+      def value
         n = calc
         Eunomia::Value.new(n.to_s, multiplier: n)
       end
 
-      def self.build scanner
+      def self.build(scanner)
         str = scanner.scan(DICE_MATCHER)
-        if str
-          new(scanner[1], scanner[2], scanner[3], scanner[4])
-        end
+        return unless str
+
+        new(scanner[1], scanner[2], scanner[3], scanner[4])
       end
     end
   end

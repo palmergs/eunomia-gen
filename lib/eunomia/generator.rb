@@ -1,28 +1,26 @@
 module Eunomia
   class Generator
     class Selector
-      DICE_MATCHER = %r{^(\d+)?d(\d+)?}
+      DICE_MATCHER = /^(\d+)?d(\d+)?/
 
       attr_reader :max, :count, :range
 
-      def initialize max, dice = nil
+      def initialize(max, dice = nil)
         @max = max
         @count = 0
         @range = max
-        if dice
-          m = DICE_MATCHER.match(dice)
-          if m
-            @count = m[1].to_i.clamp(1, [max / 4, 1].max)
-            @range = m[2].to_i.clamp(1, max)
-          end
-        end
+        return unless dice
+
+        m = DICE_MATCHER.match(dice)
+        return unless m
+
+        @count = m[1].to_i.clamp(1, [max / 4, 1].max)
+        @range = m[2].to_i.clamp(1, max)
       end
 
-      def select items
+      def select(items)
         n = random
-        while n >= max
-          n = random
-        end
+        n = random while n >= max
 
         items.each do |item|
           n -= item.weight
@@ -30,7 +28,7 @@ module Eunomia
         end
       end
 
-      def random 
+      def random
         if count > 0
           sum = 0
           count.times { sum += rand(range) }
@@ -51,20 +49,21 @@ module Eunomia
                 :weight,
                 :sep
 
-    def initialize hsh
+    def initialize(hsh)
       @key = hsh[:key] or raise "Generators must have a key"
       @version = hsh[:version].to_i
       @functions = hsh[:functions] || []
       @alts = hsh[:alts] || {}
       @tags = Set.new(hsh[:tags] || [])
       @weight = 0
-      @sep = hsh[:sep] || ''
+      @sep = hsh[:sep] || ""
       @items = hsh[:items].map do |item|
-        item = Eunomia::Item.new(item) 
+        item = Eunomia::Item.new(item)
         @weight += item.weight
         item
       end
       raise "Generators must have items" unless @items.present?
+
       @selector = Selector.new(@weight, hsh[:selector])
     end
 
@@ -72,13 +71,12 @@ module Eunomia
       sep.present?
     end
 
-    def generate store, request
+    def generate(store, request)
       item = selector.select(items, weight)
       result = item.generate(store, request)
-      
     end
 
-    def self.build hsh
+    def self.build(hsh)
       hsh = HashWithIndifferentAccess.new(hsh)
       new(hsh)
     end

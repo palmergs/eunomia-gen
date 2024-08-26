@@ -10,23 +10,21 @@ module Eunomia
   class Error < StandardError; end
 
   class Store
-    def generate key
+    def generate(key)
       # TODO
     end
 
-    def read path
+    def read(path)
       text = File.read(path)
       hsh_or_array = JSON.parse(text)
       add(hsh_or_array)
     end
 
-    def add hsh_or_array
-      if hsh_or_array.is_a?(Array)
-        hsh_or_array.each do |item|
-          add(item)
-        end
-      else
-        
+    def add(hsh_or_array)
+      return unless hsh_or_array.is_a?(Array)
+
+      hsh_or_array.each do |item|
+        add(item)
       end
     end
   end

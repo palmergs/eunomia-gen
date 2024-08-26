@@ -1,6 +1,5 @@
 module Eunomia
   class Item
-
     attr_reader :weight,
                 :value,
                 :tags,
@@ -10,8 +9,8 @@ module Eunomia
                 :sep,
                 :segments
 
-    def initialize hsh
-      @weight = hsh[:weight].to_i.clamp(1, 1000) 
+    def initialize(hsh)
+      @weight = hsh[:weight].to_i.clamp(1, 1000)
       @value = hsh[:value].to_i.clamp(0, 1_000_000)
       @tags = hsh[:tags] || []
       @alts = hsh[:altes] || {}
@@ -26,16 +25,15 @@ module Eunomia
       sep.present?
     end
 
-    def scan obj
+    def scan(obj)
       return [] if obj.nil?
-      return obj.map {|e| scan(e) } if obj.is_a?(Array)
+      return obj.map { |e| scan(e) } if obj.is_a?(Array)
 
-      Segment::build(str)
+      Segment.build(str)
     end
 
-    def generate store, request
+    def generate(_store, _request)
       segments.map do |segment|
-        
       end
     end
   end

@@ -1,7 +1,7 @@
 module Eunomia
   module Function
     class Capitalize
-      def apply str
+      def apply(str)
         str.capitalize
       end
     end
