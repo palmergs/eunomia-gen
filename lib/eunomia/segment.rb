@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "strscan"
 
 require_relative "segment/dice"
@@ -7,7 +9,6 @@ require_relative "segment/number"
 require_relative "segment/reference"
 
 module Segment
-  bail = 1000
   def self.build(str)
     ss = StringScanner.new(str)
     arr = []

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   class Item
     attr_reader :weight,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Eunomia::Segment::Constant do
   it "can be parsed" do
     s1 = Eunomia::Segment::Constant.parse(" ")

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "function/capitalize"
 require_relative "function/downcase"
 require_relative "function/pluralize"

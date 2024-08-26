@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   module Function
     class Titleize
@@ -8,7 +10,7 @@ module Eunomia
         idx = 0
         len = arr.length
         while idx < len
-          arr[idx] = arr[idx].capitalize if idx == 0 || idx == len - 1 || !SKIP_WORDS.include?(arr[idx].downcase)
+          arr[idx] = arr[idx].capitalize if idx.zero? || idx == len - 1 || !SKIP_WORDS.include?(arr[idx].downcase)
           idx += 1
         end
         arr.join(" ")

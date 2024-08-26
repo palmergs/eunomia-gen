@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   class Value
     attr_reader :key, :value, :multiplier, :right

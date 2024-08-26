@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   class Generator
     class Selector
@@ -24,12 +26,12 @@ module Eunomia
 
         items.each do |item|
           n -= item.weight
-          return item if n < 0
+          return item if n.negative?
         end
       end
 
       def random
-        if count > 0
+        if count.positive?
           sum = 0
           count.times { sum += rand(range) }
           sum
@@ -73,7 +75,7 @@ module Eunomia
 
     def generate(store, request)
       item = selector.select(items, weight)
-      result = item.generate(store, request)
+      item.generate(store, request)
     end
 
     def self.build(hsh)
