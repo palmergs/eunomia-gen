@@ -5,11 +5,14 @@ module Eunomia
     class Text
       TEXT_MATCHER = /\p{Alpha}\p{Alnum}*/
 
-      attr_reader :text, :value
+      attr_reader :text
 
       def initialize(text)
         @text = text
-        @value = Eunomia::Value.new(text)
+      end
+
+      def generate request, response
+        response.append(:text, text)
       end
 
       def self.build(scanner)

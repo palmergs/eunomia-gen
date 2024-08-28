@@ -5,11 +5,14 @@ module Eunomia
     class Constant
       CONSTANT_MATCHER = /(\p{Blank}|:space|:ws|:comma|:period|:dot|:colon|:semicolon|:dash|:minus|:hyphen|:plus|:underscore|:quote|:apostrophe|:squote|\p{Punct})/
 
-      attr_reader :str, :value
+      attr_reader :str
 
       def initialize(str)
         @str = str
-        @value = Eunomia::Value.new(str)
+      end
+
+      def generate request, response
+        response.append(:const, str)
       end
 
       def self.build(scanner)

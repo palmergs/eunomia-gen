@@ -5,12 +5,15 @@ module Eunomia
     class Number
       NUMBER_MATCHER = /(\d+)/
 
-      attr_reader :multipler, :number, :value
+      attr_reader :multipler, :number
 
       def initialize(number)
         @multiplier = number.to_i
         @number = number.to_s
-        @value = Eunomia::Value.new(@number, multiplier: @multiplier)
+      end
+
+      def generate request, response
+        response.append(:number, number, multiplier:)
       end
 
       def self.build(scanner)

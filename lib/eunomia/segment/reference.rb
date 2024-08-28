@@ -12,9 +12,15 @@ module Eunomia
         @version = version
       end
 
-      def value(_cache)
-        Eunomia::Value.new(key)
+      def generate request, response
+        g = Eunomia::STORE.lookup(lookup)
+        g.generate(request, response)
       end
+
+      def lookup
+        @_lookup ||= version = 0 ? key : "#{ key }:#{ version }"
+      end
+
 
       def self.build(scanner)
         str = scanner.scan(REFERENCE_MATCHER)

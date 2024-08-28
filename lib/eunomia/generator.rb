@@ -64,18 +64,26 @@ module Eunomia
         @weight += item.weight
         item
       end
-      raise "Generators must have items" unless @items.present?
+      raise "Generators must have items" if @items.empty?
 
       @selector = Selector.new(@weight, hsh[:selector])
+    end
+
+    def key_with_version
+      @_key_with_version ||= "#{ key }:#{ version }"
     end
 
     def sep?
       sep.present?
     end
 
-    def generate(store, request)
-      item = selector.select(items, weight)
-      item.generate(store, request)
+    def select request
+      selector.select(items, weight, request)
+    end
+
+    def generate request, response
+      item = select(request)
+      item.generate(request, response)
     end
 
     def self.build(hsh)

@@ -40,9 +40,10 @@ module Eunomia
         end
       end
 
-      def value
+      def generate request, response
         n = calc
-        Eunomia::Value.new(n.to_s, multiplier: n)
+        s = n.to_s
+        response.append(:dice, s, multiplier: n)
       end
 
       def self.build(scanner)
