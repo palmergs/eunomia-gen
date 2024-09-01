@@ -16,7 +16,7 @@ module Eunomia
       @weight = hsh[:weight].to_i.clamp(1, 1000)
       @value = hsh[:value].to_i.clamp(0, 1_000_000)
       @tags = hsh[:tags] || []
-      @alts = hsh[:altes] || {}
+      @alts = hsh[:alts] || {}
       @meta = hsh[:meta] || {}
       @functions = hsh[:functions] || []
       @sep = hsh[:sep]
@@ -28,19 +28,19 @@ module Eunomia
       sep.present?
     end
 
-    def scan obj
+    def scan(obj)
       return [] if obj.nil?
       return Eunomia::Segment.build(obj.to_s) unless obj.is_a?(Array)
 
-      obj.map {|e| Eunomia::Segment.build(e) }.flatten
+      obj.map { |e| Eunomia::Segment.build(e) }.flatten
     end
 
-    def generate request, response
-      item_response = Eunomia::Response.new
+    def generate(request)
+      result = Eunomia::Result.new(:item, value: value)
       segments.each do |segment|
-        segment.generate(request, item_response)
+        result.append(segment.generate(request, alts: alts, functions: functions))
       end
-      response.append(item_response)
+      result
     end
   end
 end

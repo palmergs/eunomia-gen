@@ -3,6 +3,8 @@
 module Eunomia
   module Segment
     class Dice
+      include Common
+
       DICE_MATCHER = %r{\[(\d+)?d(\d+)(?:([+x/-])(\d+))?\]}
       ADD = "+"
       MULTIPLY = "x"
@@ -17,6 +19,7 @@ module Eunomia
         @range = range.to_i.clamp(1, 1_000_000)
         @op = OPS.include?(op) ? op : ADD
         @constant = constant.to_i.clamp(0, 1_000_000)
+        @value = nil
       end
 
       def roll
@@ -40,10 +43,13 @@ module Eunomia
         end
       end
 
-      def generate request, response
-        n = calc
-        s = n.to_s
-        response.append(:dice, s, multiplier: n)
+      def text
+        @multiplier ||= calc
+        @multiplier.to_s
+      end
+
+      def multiplier
+        @multiplier ||= calc
       end
 
       def self.build(scanner)

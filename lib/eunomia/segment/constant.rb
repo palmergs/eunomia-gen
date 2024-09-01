@@ -3,16 +3,14 @@
 module Eunomia
   module Segment
     class Constant
+      include Common
+
       CONSTANT_MATCHER = /(\p{Blank}|:space|:ws|:comma|:period|:dot|:colon|:semicolon|:dash|:minus|:hyphen|:plus|:underscore|:quote|:apostrophe|:squote|\p{Punct})/
 
-      attr_reader :str
+      attr_reader :text
 
       def initialize(str)
-        @str = str
-      end
-
-      def generate request, response
-        response.append(:const, str)
+        @text = str
       end
 
       def self.build(scanner)
@@ -20,6 +18,8 @@ module Eunomia
         case str
         when " ", ":space", ":ws"
           Segment::SPACE
+        when ":nbsp"
+          Segment::NBSP
         when ",", ":comma"
           Segment::COMMA
         when ".", ":period", ":dot"
@@ -45,6 +45,7 @@ module Eunomia
     end
 
     SPACE = Constant.new(" ")
+    NBSP = Constant.new("")
     COMMA = Constant.new(",")
     PERIOD = Constant.new(".")
     COLON = Constant.new(":")

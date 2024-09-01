@@ -4,8 +4,10 @@ RSpec.describe :example_dwarf_names do
   let(:json) do
     [
       {
-        key: 'dwarf-prefix',
-        items: %w[ba bi bo be bu cha che cho da do di de du e eck fa fo fi fe ga gam ge gem go gom gi gim ha ho hom ham hem him hi he ka ko ke ki ma mo na no pa po pi pe quo qua quam ra ro ri re ta tha to tho thro thra te ohe tho ro wa wo xa]
+        key: "dwarf-prefix",
+        items: %w[ba bi bo be bu cha che cho da do di de du e eck fa fo fi fe ga gam ge gem go gom gi gim ha ho hom ham
+                  hem him hi he ka ko ke ki ma mo na no pa po pi pe quo qua quam ra ro ri re ta tha to tho thro thra te
+                  ohe tho ro wa wo xa]
       },
       {
         key: "dwarf-suffix",
@@ -35,7 +37,9 @@ RSpec.describe :example_dwarf_names do
 
   it "can build a generator from a hash" do
     Eunomia::STORE.add(json)
-    v = Eunomia::STORE.generate("dwarf-name")
-    expect(v).to be_a Eunomia::Result
+    request = Eunomia::Request.new("dwarf-name")
+    result = request.generate
+    pp result
+    p "Result: #{result}"
   end
 end

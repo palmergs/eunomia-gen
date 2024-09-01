@@ -17,5 +17,6 @@ RSpec.describe Eunomia::Segment::Dice do
     expect(d.range).to eq(4)
     expect(d.op).to eq("+")
     expect(d.constant).to eq(0)
+    expect(d.text).to match(/[0-4]/)
   end
 end

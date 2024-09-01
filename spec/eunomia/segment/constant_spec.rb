@@ -15,6 +15,6 @@ RSpec.describe Eunomia::Segment::Constant do
     s3 = Eunomia::Segment::Constant.build(ss)
     expect(s1).to eq(s3)
     expect(s2).to eq(s3)
-    expect(s3.str).to eq(" ")
+    expect(s3.text).to eq(" ")
   end
 end

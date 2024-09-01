@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require_relative "eunomia/version"
+require_relative "eunomia/selector"
 require_relative "eunomia/generator"
 require_relative "eunomia/item"
+require_relative "eunomia/element"
 require_relative "eunomia/request"
 require_relative "eunomia/result"
 require_relative "eunomia/segment"
@@ -16,26 +18,8 @@ module Eunomia
       @store = {}
     end
 
-    def lookup key
-      @store[key] or raise Error, "Generator #{ key } not found"
-    end
-
-    def generate key, count: 0
-      g = lookup(key)
-
-      count = count.to_i.clamp(0, 1000)
-      if count == 0
-        request = Eunomia::Request.new
-        response = Eunomia::Result.new
-        g.generate(request, response)
-      else
-        ret = []
-        count.times do
-          response = Eunomia::Result.new
-          ret << g.generate(request, response)
-        end
-        ret
-      end
+    def lookup(key)
+      @store[key] or raise Error, "Generator #{key} not found"
     end
 
     def read(path)

@@ -3,17 +3,15 @@
 module Eunomia
   module Segment
     class Number
+      include Common
+
       NUMBER_MATCHER = /(\d+)/
 
-      attr_reader :multipler, :number
+      attr_reader :text, :multipler
 
       def initialize(number)
         @multiplier = number.to_i
-        @number = number.to_s
-      end
-
-      def generate request, response
-        response.append(:number, number, multiplier:)
+        @text = number.to_s
       end
 
       def self.build(scanner)

@@ -2,7 +2,10 @@
 
 module Eunomia
   module Segment
+    # Reference represents a link to a Generator defined with square brackets.
     class Reference
+      include Common
+
       REFERENCE_MATCHER = /^\[([A-Za-z][A-Za-z0-9_-]+)(?::([0-9]+))?\]/
 
       attr_reader :key, :version
@@ -12,15 +15,17 @@ module Eunomia
         @version = version
       end
 
-      def generate request, response
+      def generate(request, alts: {}, functions: [])
+        return request.append(Eunomia::Element.new(request.constants[lookup])) if request.constants.key?(lookup)
+
+        request.increase_depth
         g = Eunomia::STORE.lookup(lookup)
-        g.generate(request, response)
+        g.generate(request, alts: alts.merge(g.alts), functions: Set.new(functions + g.functions).to_a)
       end
 
       def lookup
-        @_lookup ||= version = 0 ? key : "#{ key }:#{ version }"
+        @lookup ||= version.zero? ? key : "#{key}:#{version}"
       end
-
 
       def self.build(scanner)
         str = scanner.scan(REFERENCE_MATCHER)

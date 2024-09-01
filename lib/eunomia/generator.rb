@@ -1,54 +1,16 @@
 # frozen_string_literal: true
 
 module Eunomia
+  # Generator consists of a list of Items. When generating a result,
+  # an item is selected at random based on the item's weight.
   class Generator
-    class Selector
-      DICE_MATCHER = /^(\d+)?d(\d+)?/
-
-      attr_reader :max, :count, :range
-
-      def initialize(max, dice = nil)
-        @max = max
-        @count = 0
-        @range = max
-        return unless dice
-
-        m = DICE_MATCHER.match(dice)
-        return unless m
-
-        @count = m[1].to_i.clamp(1, [max / 4, 1].max)
-        @range = m[2].to_i.clamp(1, max)
-      end
-
-      def select(items)
-        n = random
-        n = random while n >= max
-
-        items.each do |item|
-          n -= item.weight
-          return item if n.negative?
-        end
-      end
-
-      def random
-        if count.positive?
-          sum = 0
-          count.times { sum += rand(range) }
-          sum
-        else
-          rand(max)
-        end
-      end
-    end
-
     attr_reader :key,
                 :version,
                 :alts,
-                :selector,
                 :functions,
                 :tags,
                 :items,
-                :weight,
+                :selector,
                 :sep
 
     def initialize(hsh)
@@ -59,31 +21,33 @@ module Eunomia
       @tags = Set.new(hsh[:tags] || [])
       @weight = 0
       @sep = hsh[:sep] || ""
-      @items = hsh[:items].map do |item|
-        item = Eunomia::Item.new(item)
-        @weight += item.weight
-        item
-      end
+      @selector = Eunomia::Selector.new(hsh[:rng])
+      @items = hsh[:items].map { |item| Eunomia::Item.new(item) }
       raise "Generators must have items" if @items.empty?
-
-      @selector = Selector.new(@weight, hsh[:selector])
     end
 
     def key_with_version
-      @_key_with_version ||= "#{ key }:#{ version }"
+      @key_with_version ||= "#{key}:#{version}"
     end
 
     def sep?
       sep.present?
     end
 
-    def select request
-      selector.select(items, weight, request)
+    # Select items that have all the given tag values
+    def filter(tags)
+      items.select { |item| (tags - item.tags).empty? }
     end
 
-    def generate request, response
-      item = select(request)
-      item.generate(request, response)
+    def generate(request, alts: {}, functions: [])
+      items = filter(request.tags)
+      item = selector.select(items)
+      result = item.generate(request)
+      result.elements.each do |element|
+        element.substitute(request, alts: alts)
+        element.apply(request, functions: functions)
+      end
+      result
     end
 
     def self.build(hsh)
