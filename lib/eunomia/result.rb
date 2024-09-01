@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   class Result
     attr_reader :source, :elements, :multiplier, :base_value

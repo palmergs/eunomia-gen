@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Eunomia::Segment do
   it "can build segments from consecutive references" do
     arr = Eunomia::Segment.build("[test-one][test-two]")

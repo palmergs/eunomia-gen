@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Eunomia::Item do
   let(:hsh) do
     {

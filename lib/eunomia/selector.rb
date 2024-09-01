@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   # Selector defines a strategy for selecting an item from a list of items.
   # The default behavior is to randomly generate a number between 0 and the
@@ -38,7 +40,7 @@ module Eunomia
 
     def random(items)
       max_weight = items.map(&:weight).sum
-      if count.nil? or count >= max_weight
+      if count.nil? || count >= max_weight
         rand(max_weight)
       else
         n = roll

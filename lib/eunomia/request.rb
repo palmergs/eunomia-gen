@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   class Request
     attr_reader :key, :alt_key, :alts, :meta, :tags, :functions, :constants, :depth
