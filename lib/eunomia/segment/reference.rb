@@ -15,12 +15,13 @@ module Eunomia
         @version = version
       end
 
-      def generate(request, alts: {}, functions: [])
+      def generate(request)
         return request.append(Eunomia::Element.new(request.constants[lookup])) if request.constants.key?(lookup)
 
         request.increase_depth
+
         g = Eunomia::STORE.lookup(lookup)
-        g.generate(request, alts: alts.merge(g.alts), functions: Set.new(functions + g.functions).to_a)
+        g.generate(request)
       end
 
       def lookup

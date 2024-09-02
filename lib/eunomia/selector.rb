@@ -36,6 +36,7 @@ module Eunomia
         n -= item.weight
         return item if n.negative?
       end
+      nil
     end
 
     def random(items)

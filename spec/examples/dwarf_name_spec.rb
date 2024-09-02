@@ -41,7 +41,6 @@ RSpec.describe :example_dwarf_names do
     Eunomia::STORE.add(json)
     request = Eunomia::Request.new("dwarf-name")
     result = request.generate
-    pp result
-    p "Result: #{result}"
+    expect(result.to_s).to match(/^[A-Z][a-z]+$/)
   end
 end

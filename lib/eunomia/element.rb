@@ -14,21 +14,11 @@ module Eunomia
       !children.empty?
     end
 
-    def substitute(request, alts: {})
-      @str = request.alts[str] if request.alts.key(str)
-      @str = alts[request.alt_key][str] if request.alt_key?
-    end
-
-    def apply(request, functions: [])
-      all_functions = request.functions + functions
-      @str = Eunomia::Function.apply(str, all_functions)
-    end
-
     def to_s
       str
     end
 
-    def to_hsh
+    def to_h
       { orig:, str:, value:, multiplier:, children: children.map(&:to_hsh) }
     end
   end

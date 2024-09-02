@@ -12,12 +12,9 @@ module Eunomia
         1
       end
 
-      def generate(request, alts: {}, functions: [])
+      def generate(request)
         calc # update values for dynamic segments
-        elem = Eunomia::Element.new(text, value: value, multiplier: multiplier)
-        elem.substitute(request, alts: alts)
-        elem.apply(request, functions: functions)
-        elem
+        Eunomia::Element.new(text, value: value, multiplier: multiplier)
       end
 
       def calc; end

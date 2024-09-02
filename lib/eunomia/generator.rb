@@ -34,19 +34,25 @@ module Eunomia
       sep.present?
     end
 
+    def alt_for(key, segment)
+      return segment unless key
+      return segment unless alts[key]
+
+      alts[key][segment] || segment
+    end
+
     # Select items that have all the given tag values
     def filter(tags)
       items.select { |item| (tags - item.tags).empty? }
     end
 
-    def generate(request, alts: {}, functions: [])
+    def generate(request)
       items = filter(request.tags)
       item = selector.select(items)
+      raise "No items found for #{key_with_version}" unless item
+
       result = item.generate(request)
-      result.elements.each do |element|
-        element.substitute(request, alts: alts)
-        element.apply(request, functions: functions)
-      end
+      result.apply(request, self, item)
       result
     end
 

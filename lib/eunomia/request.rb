@@ -19,6 +19,10 @@ module Eunomia
       !alt_key.nil?
     end
 
+    def alt_for(segment)
+      alts[segment] || segment
+    end
+
     def increase_depth
       @depth += 1
       raise "Depth exceeded" if @depth > 100

@@ -35,10 +35,17 @@ module Eunomia
       obj.map { |e| Eunomia::Segment.build(e) }.flatten
     end
 
+    def alt_for(key, segment)
+      return segment unless key
+      return segment unless alts[key]
+
+      alts[key][segment] || segment
+    end
+
     def generate(request)
       result = Eunomia::Result.new(:item, value: value)
       segments.each do |segment|
-        result.append(segment.generate(request, alts: alts, functions: functions))
+        result.append(segment.generate(request))
       end
       result
     end
