@@ -37,17 +37,36 @@ RSpec.describe :example_dwarf_names do
             segments: "[dwarf-consonant][dwarf-vowel-suffix]"
           }
         ]
+      },
+      {
+        key: "dwarf-name-with-parent",
+        tags: ["name:first", "tolkien:dwarf", "rpg:dwarf"],
+        items: [
+          "[dwarf-name] son of [dwarf-name:parent]"
+        ]
       }
     ]
   end
 
   it "can build a generator from a hash" do
     Eunomia::STORE.add(json)
-    request = Eunomia::Request.new("dwarf-name")
+    request = Eunomia::Request.new("dwarf-name", unique: true)
     arr = []
     10.times do
       result = request.generate
       expect(result.to_s).to match(/^[A-Z][a-z]+$/)
+      arr << result.to_s
+    end
+    pp arr
+  end
+
+  it "can use a constant to substitute" do
+    Eunomia::STORE.add(json)
+    request = Eunomia::Request.new("dwarf-name-with-parent", unique: true, constants: { "dwarf-name:parent" => "Bob" })
+    arr = []
+    10.times do
+      result = request.generate
+      expect(result.to_s).to match(/^[A-Z][a-z]+ son of [A-Z][a-z]+$/)
       arr << result.to_s
     end
     pp arr

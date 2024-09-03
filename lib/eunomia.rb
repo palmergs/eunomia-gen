@@ -13,6 +13,8 @@ require_relative "eunomia/function"
 module Eunomia
   class Error < StandardError; end
 
+  # Store is a singleton that holds all the generators.
+  # Generators are stored by key and key_with_label.
   class Store
     def initialize
       @store = {}
@@ -38,7 +40,6 @@ module Eunomia
       else
         gen = Eunomia::Generator.new(hsh_or_array)
         @store[gen.key] = gen
-        @store[gen.key_with_version] = gen
       end
     end
   end
