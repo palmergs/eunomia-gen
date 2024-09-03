@@ -3,13 +3,27 @@ RSpec.describe :example_card_generator do
     [
       {
         key: "card-suite",
-        items: %w[heart clubs diamonds spades]
+        items: %w[hearts clubs diamonds spades]
       },
       {
         key: "card-face",
-        alts: { "2" => { "*" => "duece" } },
+        alts: {
+          "1" => { "*" => "ace" },
+          "2" => { "*" => "duece" },
+          "3" => { "*" => "three" },
+          "4" => { "*" => "four" },
+          "5" => { "*" => "five" },
+          "6" => { "*" => "six" },
+          "7" => { "*" => "seven" },
+          "8" => { "*" => "eight" },
+          "9" => { "*" => "nine" },
+          "10" => { "*" => "ten" },
+          "11" => { "*" => "jack" },
+          "12" => { "*" => "queen" },
+          "13" => { "*" => "king" }
+        },
         items: [
-          { segments: "ace", value: 1 },
+          { segments: "1", value: 1 },
           { segments: "2", value: 2 },
           { segments: "3", value: 3 },
           { segments: "4", value: 4 },
@@ -19,11 +33,37 @@ RSpec.describe :example_card_generator do
           { segments: "8", value: 8 },
           { segments: "9", value: 9 },
           { segments: "10", value: 10 },
-          { segments: "jack", value: 10 },
-          { segments: "queen", value: 10 },
-          { segments: "king", value: 10 }
+          { segments: "11", value: 10 },
+          { segments: "12", value: 10 },
+          { segments: "13", value: 10 }
+        ]
+      },
+      {
+        key: "playing-card",
+        functions: ["titleize"],
+        items: [
+          "a [card-face] of [card-suite]"
         ]
       }
     ]
+  end
+
+  it "can generate a card" do
+    Eunomia::STORE.add(json)
+    request = Eunomia::Request.new(
+      "playing-card",
+      alts: {
+        "hearts" => "hearts",
+        "clubs" => "clover",
+        "spades" => "pikes",
+        "diamonds" => "tiles"
+      }
+    )
+    arr = []
+    10.times do
+      result = request.generate
+      arr << [result.to_s, result.value]
+    end
+    pp arr
   end
 end

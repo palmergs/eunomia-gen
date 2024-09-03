@@ -45,7 +45,9 @@ module Eunomia
     def generate(request)
       result = Eunomia::Result.new(:item, value: value)
       segments.each { |seg| result.append(seg.generate(request)) }
-      result.apply(alts, functions, locale: request.alt_key)
+      all_alts = alts.merge(request.alts)
+      all_functs = Set.new(functions + request.functions)
+      result.apply(all_alts, all_functs, locale: request.alt_key)
       result
     end
   end

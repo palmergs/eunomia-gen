@@ -4,7 +4,7 @@ module Eunomia
   class Request
     attr_reader :key, :alt_key, :alts, :meta, :tags, :functions, :constants, :depth
 
-    def initialize(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {})
+    def initialize(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {}, unique: false)
       @key = key
       @alt_key = alt_key
       @alts = alts || {}
@@ -13,6 +13,11 @@ module Eunomia
       @constants = constants || {}
       @functions = functions || {}
       @depth = 0
+      @unique = unique ? Set.new : nil
+    end
+
+    def generate_unique?
+      !@unique.nil?
     end
 
     def alt_key?
@@ -30,9 +35,18 @@ module Eunomia
 
     def generate
       @depth = 0
-      result = Eunomia::STORE.lookup(key).generate(self)
-      result.apply(alts, functions)
-      result
+      gen = Eunomia::STORE.lookup(key)
+
+      tries = 0
+      loop do
+        result = gen.generate(self)
+        result.apply(alts, functions)
+        return result unless @unique
+        return result if @unique.add?(result.to_s)
+
+        tries += 1
+        raise "Unable to find a unique result" if tries > 100
+      end
     end
   end
 end
