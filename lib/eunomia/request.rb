@@ -30,7 +30,9 @@ module Eunomia
 
     def generate
       @depth = 0
-      Eunomia::STORE.lookup(key).generate(self)
+      result = Eunomia::STORE.lookup(key).generate(self)
+      result.apply(alts, functions)
+      result
     end
   end
 end

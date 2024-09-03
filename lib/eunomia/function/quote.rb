@@ -3,10 +3,10 @@
 module Eunomia
   module Function
     class Quote
-      def apply(str)
-        return "" if str.blank?
-
-        "“#{str.strip}”"
+      def apply(arr)
+        arr[0] = "\"#{arr[0]}"
+        arr[-1] = "#{arr[-1]}\""
+        arr
       end
     end
   end

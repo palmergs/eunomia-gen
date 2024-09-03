@@ -9,7 +9,7 @@ RSpec.describe Eunomia::Function::Titleize do
 
     f = Eunomia::Function::Titleize.new
     tests.each_pair do |s, x|
-      expect(f.apply(s)).to eq(x)
+      expect(f.apply(s.split(/\s+/)).join(" ")).to eq(x)
     end
   end
 end

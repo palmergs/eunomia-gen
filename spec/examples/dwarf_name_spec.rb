@@ -6,18 +6,20 @@ RSpec.describe :example_dwarf_names do
   let(:json) do
     [
       {
-        key: "dwarf-prefix",
-        items: %w[ba bi bo be bu cha che cho da do di de du e eck fa fo fi fe ga gam ge gem go gom gi gim ha ho hom ham
-                  hem him hi he ka ko ke ki ma mo na no pa po pi pe quo qua quam ra ro ri re ta tha to tho thro thra te
-                  ohe tho ro wa wo xa]
+        key: "dwarf-consonant",
+        items: %w[b c d dw f g gl h kw m n ph r st t th thr v w x z]
       },
       {
-        key: "dwarf-suffix",
-        items: %w[lin len lon lun lphour lfor mli li rin ran ro ron rum van von ven vo pan pon po pen]
+        key: "dwarf-vowel",
+        items: %w[a e i o u]
       },
       {
-        key: "dwarf-unique-name",
-        items: %w[dain thorin thror thrain drasa]
+        key: "dwarf-consonant-suffix",
+        items: %w[li four phour lin len mli rin ren son sen don den]
+      },
+      {
+        key: "dwarf-vowel-suffix",
+        items: %w[ain oin]
       },
       {
         key: "dwarf-name",
@@ -25,12 +27,14 @@ RSpec.describe :example_dwarf_names do
         functions: ["capitalize"],
         items: [
           {
-            segments: "[dwarf-prefix][dwarf-suffix]",
-            weight: 500
+            segments: "[dwarf-consonant][dwarf-vowel][dwarf-consonant-suffix]",
+            weight: 20
           },
           {
-            segments: "[dwarf-unique-name]",
-            weight: 1
+            segments: "[dwarf-vowel][dwarf-consonant-suffix]"
+          },
+          {
+            segments: "[dwarf-consonant][dwarf-vowel-suffix]"
           }
         ]
       }
@@ -40,7 +44,12 @@ RSpec.describe :example_dwarf_names do
   it "can build a generator from a hash" do
     Eunomia::STORE.add(json)
     request = Eunomia::Request.new("dwarf-name")
-    result = request.generate
-    expect(result.to_s).to match(/^[A-Z][a-z]+$/)
+    arr = []
+    10.times do
+      result = request.generate
+      expect(result.to_s).to match(/^[A-Z][a-z]+$/)
+      arr << result.to_s
+    end
+    pp arr
   end
 end

@@ -25,27 +25,27 @@ module Eunomia
       @display += element.to_s
       @multiplier *= element.multiplier unless element.multiplier.nil?
       @base_value += element.value unless element.value.nil?
+      self
     end
 
     def append_result(result)
       element = Element.new(result.to_s, value: result.value, multiplier: result.multiplier, children: result.elements)
       @elements << element
       @display += element.to_s
+      @base_value += element.value
+      self
     end
 
-    def apply(request, generator, item)
+    def apply(alts, functions, locale: nil)
       arr = to_s.split(/\s+/)
-      arr.map! do |segment|
-        segment = request.alt_for(segment)
-        segment = item.alt_for(request.alt_key, segment)
-        segment = generator.alt_for(request.alt_key, segment)
-        segment = Eunomia::Function.apply(segment, request.functions)
-        segment = Eunomia::Function.apply(segment, generator.functions)
-        segment = Eunomia::Function.apply(segment, item.functions)
-        segment
+      arr = arr.map do |segment|
+        ret = alts[segment]
+        ret = ret.is_a?(Hash) ? ret[locale] || ret['*'] || segment : ret || segment
       end
+      arr = Eunomia::Function.apply(arr, functions)
 
-      @display = arr.join
+      @display = arr.join(' ')
+      self
     end
 
     def value

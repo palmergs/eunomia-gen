@@ -3,8 +3,8 @@
 module Eunomia
   module Function
     class Upcase
-      def apply(str)
-        str.upcase
+      def apply(arr)
+        arr.map(&:upcase)
       end
     end
   end

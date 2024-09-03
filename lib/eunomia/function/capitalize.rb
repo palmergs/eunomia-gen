@@ -3,8 +3,8 @@
 module Eunomia
   module Function
     class Capitalize
-      def apply(str)
-        str.capitalize
+      def apply(arr)
+        arr.map(&:capitalize)
       end
     end
   end

@@ -52,7 +52,7 @@ module Eunomia
       raise "No items found for #{key_with_version}" unless item
 
       result = item.generate(request)
-      result.apply(request, self, item)
+      result.apply(alts, functions, locale: request.alt_key)
       result
     end
 

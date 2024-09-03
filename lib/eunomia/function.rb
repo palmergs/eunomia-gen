@@ -8,31 +8,21 @@ require_relative "function/titleize"
 require_relative "function/upcase"
 
 module Eunomia
-  # Function module contains functions that can be applied to a string.
+  # Function module contains functions that can be applied to an array of strings.
   module Function
-    def self.apply(str, functions)
-      return str if functions.empty?
+    def self.apply(arr, functions)
+      functions.each { |function| arr = FUNCTIONS[function].apply(arr) }
 
-      functions.each do |function|
-        str = case function
-              when "capitalize"
-                Eunomia::Function::Capitalize.new.apply(str)
-              when "downcase"
-                Eunomia::Function::Downcase.new.apply(str)
-              when "pluralize"
-                Eunomia::Function::Pluralize.new.apply(str)
-              when "quote"
-                Eunomia::Function::Quote.new.apply(str)
-              when "titleize"
-                Eunomia::Function::Titleize.new.apply(str)
-              when "upcase"
-                Eunomia::Function::Upcase.new.apply(str)
-              else
-                str
-              end
-      end
-
-      str
+      arr
     end
+
+    FUNCTIONS = {
+      "capitalize" => Eunomia::Function::Capitalize.new,
+      "downcase" => Eunomia::Function::Downcase.new,
+      "pluralize" => Eunomia::Function::Pluralize.new,
+      "quote" => Eunomia::Function::Quote.new,
+      "titleize" => Eunomia::Function::Titleize.new,
+      "upcase" => Eunomia::Function::Upcase.new
+    }.freeze
   end
 end

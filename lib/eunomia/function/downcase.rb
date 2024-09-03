@@ -3,8 +3,8 @@
 module Eunomia
   module Function
     class Downcase
-      def apply(str)
-        str.downcase
+      def apply(arr)
+        arr.map(&:downcase)
       end
     end
   end
