@@ -49,7 +49,7 @@ RSpec.describe :example_dwarf_names do
   end
 
   it "can build a generator from a hash" do
-    Eunomia::STORE.add(json)
+    Eunomia.add(json)
     request = Eunomia::Request.new("dwarf-name", unique: true)
     arr = []
     10.times do
@@ -61,7 +61,7 @@ RSpec.describe :example_dwarf_names do
   end
 
   it "can use a constant to substitute" do
-    Eunomia::STORE.add(json)
+    Eunomia.add(json)
     request = Eunomia::Request.new("dwarf-name-with-parent", unique: true, constants: { "dwarf-name:parent" => "Bob" })
     arr = []
     10.times do

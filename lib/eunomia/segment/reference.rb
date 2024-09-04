@@ -30,8 +30,7 @@ module Eunomia
         return Eunomia::Element.new(request.constants[lookup]) if request.constants.key?(lookup)
 
         request.increase_depth
-        g = Eunomia::STORE.lookup(key)
-        g.generate(request)
+        Eunomia.generate(key, request)
       end
 
       def lookup

@@ -49,7 +49,7 @@ RSpec.describe :example_treasure do
   end
 
   it "can generate a treasure description" do
-    Eunomia::STORE.add(json)
+    Eunomia.add(json)
     request = Eunomia::Request.new("treasure-container")
     arr = []
     10.times do

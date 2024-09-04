@@ -35,7 +35,7 @@ module Eunomia
 
     def generate
       @depth = 0
-      gen = Eunomia::STORE.lookup(key)
+      gen = Eunomia.lookup(key)
 
       tries = 0
       loop do

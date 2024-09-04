@@ -9,10 +9,10 @@ RSpec.describe :example_card_generator do
         key: "card-face",
         alts: {
           "1" => { "*" => "ace" },
-          "2" => { "*" => "duece" },
-          "3" => { "*" => "three" },
-          "4" => { "*" => "four" },
-          "5" => { "*" => "five" },
+          "2" => { "*" => "duece", "es" => "dos" },
+          "3" => { "*" => "three", "es" => "tres" },
+          "4" => { "*" => "four", "es" => "quatro" },
+          "5" => { "*" => "five", "es" => "cinco" },
           "6" => { "*" => "six" },
           "7" => { "*" => "seven" },
           "8" => { "*" => "eight" },
@@ -49,7 +49,7 @@ RSpec.describe :example_card_generator do
   end
 
   it "can generate a card" do
-    Eunomia::STORE.add(json)
+    Eunomia.add(json)
     request = Eunomia::Request.new(
       "playing-card",
       alts: {
@@ -57,7 +57,8 @@ RSpec.describe :example_card_generator do
         "clubs" => "clover",
         "spades" => "pikes",
         "diamonds" => "tiles"
-      }
+      },
+      alt_key: "es"
     )
     arr = []
     10.times do

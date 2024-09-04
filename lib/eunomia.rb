@@ -2,6 +2,7 @@
 
 require_relative "eunomia/version"
 require_relative "eunomia/selector"
+require_relative "eunomia/store"
 require_relative "eunomia/generator"
 require_relative "eunomia/item"
 require_relative "eunomia/element"
@@ -13,36 +14,29 @@ require_relative "eunomia/function"
 module Eunomia
   class Error < StandardError; end
 
-  # Store is a singleton that holds all the generators.
-  # Generators are stored by key and key_with_label.
-  class Store
-    def initialize
-      @store = {}
-    end
 
-    def lookup(key)
-      @store[key] or raise Error, "Generator #{key} not found"
-    end
 
-    def read(path)
-      text = File.read(path)
-      hsh_or_array = JSON.parse(text)
-      add(hsh_or_array)
-    end
-
-    def add(hsh_or_array)
-      return unless hsh_or_array
-
-      if hsh_or_array.is_a?(Array)
-        hsh_or_array.each do |item|
-          add(item)
-        end
-      else
-        gen = Eunomia::Generator.new(hsh_or_array)
-        @store[gen.key] = gen
-      end
-    end
+  def self.lookup(key)
+    @@store ||= Store.new
+    @@store.lookup(key)
   end
 
-  STORE = Store.new
+  def self.generate(key, request)
+    @@store ||= Store.new
+    @@store.lookup(key).generate(request)
+  end
+
+  def self.read(path)
+    @@store ||= Store.new
+    @@store.read(path)
+  end
+
+  def self.add(hsh_or_array)
+    @@store ||= Store.new
+    @@store.add(hsh_or_array)
+  end
+
+  def self.request(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {}, unique: false)
+    Request.new(key, alts:, alt_key:, meta:, tags:, functions:, constants:, unique:)
+  end
 end
