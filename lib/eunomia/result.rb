@@ -2,13 +2,14 @@
 
 module Eunomia
   class Result
-    attr_reader :source, :elements, :multiplier, :base_value
+    attr_reader :source, :elements, :multiplier, :base_value, :meta
 
     def initialize(source, value: 0, multiplier: 1)
       @source = source
       @base_value = value
       @multiplier = multiplier
       @elements = []
+      @meta = {}
       @display = ""
     end
 
@@ -25,6 +26,7 @@ module Eunomia
       @display += element.to_s
       @multiplier *= element.multiplier unless element.multiplier.nil?
       @base_value += element.value unless element.value.nil?
+      @meta.merge!(element.meta)
       self
     end
 
@@ -33,6 +35,7 @@ module Eunomia
       @elements << element
       @display += element.to_s
       @base_value += element.value
+      @meta.merge!(result.meta)
       self
     end
 
