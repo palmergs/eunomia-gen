@@ -44,7 +44,7 @@ module Eunomia
 
     def generate(request)
       result = Eunomia::Result.new(:item, value: value)
-      result.meta.merge!(meta)
+      result.merge_meta(meta)
       segments.each { |seg| result.append(seg.generate(request)) }
       all_alts = alts.merge(request.alts)
       all_functs = Set.new(functions + request.functions)

@@ -9,7 +9,7 @@ module Eunomia
       @base_value = value
       @multiplier = multiplier
       @elements = []
-      @meta = {}
+      @meta = Hash.new {|h,k| h[k] = Set.new}
       @display = ""
     end
 
@@ -26,7 +26,7 @@ module Eunomia
       @display += element.to_s
       @multiplier *= element.multiplier unless element.multiplier.nil?
       @base_value += element.value unless element.value.nil?
-      @meta.merge!(element.meta)
+      merge_meta(element.meta)
       self
     end
 
@@ -35,8 +35,20 @@ module Eunomia
       @elements << element
       @display += element.to_s
       @base_value += element.value
-      @meta.merge!(result.meta)
+      merge_meta(result.meta)
       self
+    end
+
+    def merge_meta(m)
+      return unless m
+
+      m.each do |k, v|
+        if v.is_a?(Set)
+          @meta[k].merge(v)
+        else
+          @meta[k] << v
+        end
+      end
     end
 
     def apply(alts, functions, locale: nil)
