@@ -55,10 +55,5 @@ module Eunomia
       result.apply(alts, functions, locale: request.alt_key)
       result
     end
-
-    def self.build(hsh)
-      hsh = HashWithIndifferentAccess.new(hsh)
-      new(hsh)
-    end
   end
 end

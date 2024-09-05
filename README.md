@@ -1,8 +1,13 @@
 # Eunomia
 
-TODO: Delete this and the text below, and describe your gem
+This gem is a text generator; a cross between mad-libs and Faker. The focus is on
+generating text that is appropriate for games, stories, and other creative works.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/eunomia_gen`. To experiment with that code, run `bin/console` for an interactive prompt.
+Why does this exist? In the age of generatve text using LLMs, there's probably not
+a good reason other than it's more understandable and possibly easier to fine tune.
+
+Why Eunomia? Eunomia is a minor Greek goddess of law and order and since the generator
+is set up using a series of rules, it seemed appropriate.
 
 ## Installation
 
@@ -18,7 +23,40 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+The gem is used by loading JSON (or ruby hashes) into a store, building a request context,
+and then selecting a generator to use.
+
+There are three main concepts:
+* Segments are elements in a sequence that can be combined to form a string.
+Segments in square brackets have a special meaning. Dice notation (e.g. `[d4]`)
+generates a random number. A segment that is a key (e.g. `[thing]`) will be replaced
+with a value chosen by the generator.
+* Items are selected at random from the generator that they are nested in. Items
+can have metadata about the generated string such as value (an arbitrary integer),
+ruby hash, or a weight (the likihood of being selected)
+* Generators are the top level of the JSON. They contain a list of items that are
+selected at random.
+
+```ruby
+require 'eunomia_gen'
+
+data = [
+  {
+    key: 'generator',
+    items: [
+      functions: ["pluralize", "capitalize"],
+      segments: "[d4] [thing]"
+    ]
+  },
+  {
+    key: 'thing',
+    items: %w[apple banana cherry]
+  }
+]
+
+Eunomia.add(data)
+p Eunomia.generate('generator').to_s # => "3 Bananas"
+```
 
 ## Development
 

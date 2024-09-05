@@ -2,6 +2,10 @@
 
 module Eunomia
   module Segment
+    # Dice generates a random number using dice notation (e.g. `[3d6]`)
+    # with common operators (e.g. `[3d6+2]` or `[4d10x2]`)
+    # All values are integers so using the division operator
+    # will be rounded down.
     class Dice
       include Common
 
@@ -31,6 +35,7 @@ module Eunomia
       end
 
       def calc
+        @multipler = nil
         case op
         when MULTIPLY
           roll * constant

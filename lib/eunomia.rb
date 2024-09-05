@@ -14,15 +14,14 @@ require_relative "eunomia/function"
 module Eunomia
   class Error < StandardError; end
 
-
-
   def self.lookup(key)
     @@store ||= Store.new
     @@store.lookup(key)
   end
 
-  def self.generate(key, request)
+  def self.generate(key, request = nil)
     @@store ||= Store.new
+    request = Request.new(key) unless request
     @@store.lookup(key).generate(request)
   end
 
@@ -38,5 +37,9 @@ module Eunomia
 
   def self.request(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {}, unique: false)
     Request.new(key, alts:, alt_key:, meta:, tags:, functions:, constants:, unique:)
+  end
+
+  def self.apply(arr, functions)
+    Function.apply(arr, functions)
   end
 end
