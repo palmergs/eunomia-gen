@@ -9,7 +9,7 @@ require_relative "eunomia/element"
 require_relative "eunomia/request"
 require_relative "eunomia/result"
 require_relative "eunomia/segment"
-require_relative "eunomia/function"
+require_relative "eunomia/functions"
 
 module Eunomia
   class Error < StandardError; end
@@ -40,6 +40,7 @@ module Eunomia
   end
 
   def self.apply(arr, functions)
-    Function.apply(arr, functions)
+    @@functions ||= Functions.new
+    @@functions.apply(arr, functions)
   end
 end

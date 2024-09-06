@@ -57,7 +57,7 @@ module Eunomia
         ret = alts[segment]
         ret = ret.is_a?(Hash) ? ret[locale] || ret['*'] || segment : ret || segment
       end
-      arr = Eunomia::Function.apply(arr, functions)
+      arr = Eunomia.apply(arr, functions)
 
       @display = arr.join(' ')
       self
