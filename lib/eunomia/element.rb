@@ -12,7 +12,7 @@ module Eunomia
     end
 
     def children?
-      !children.empty?
+      !children.nil? && !children.empty?
     end
 
     def to_s
@@ -20,7 +20,11 @@ module Eunomia
     end
 
     def to_h
-      { orig:, str:, value:, multiplier:, children: children.map(&:to_hsh) }
+      if children?
+        { orig:, str:, value:, multiplier:, children: children.map(&:to_h) }
+      else
+        { orig:, str:, value:, multiplier: }
+      end
     end
   end
 end

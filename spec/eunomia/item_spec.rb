@@ -13,7 +13,7 @@ RSpec.describe Eunomia::Item do
   end
 
   let(:item) do
-    Eunomia::Item.new(hsh)
+    Eunomia::Item.new("test", hsh)
   end
 
   it "can generate a result" do

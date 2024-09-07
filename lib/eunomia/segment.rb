@@ -16,7 +16,11 @@ module Eunomia
       ss = StringScanner.new(str)
       arr = []
       until ss.eos?
-        seg = Eunomia::Segment::Dice.build(ss) || Eunomia::Segment::Reference.build(ss) || Eunomia::Segment::Number.build(ss) || Eunomia::Segment::Constant.build(ss) || Eunomia::Segment::Text.build(ss)
+        seg = Eunomia::Segment::Dice.build(ss) ||
+              Eunomia::Segment::Reference.build(ss) ||
+              Eunomia::Segment::Number.build(ss) ||
+              Eunomia::Segment::Text.build(ss) ||
+              Eunomia::Segment::Constant.build(ss)
         raise "Unable to parse #{ss.rest} (#{ss.rest_size})" unless seg
 
         arr << seg

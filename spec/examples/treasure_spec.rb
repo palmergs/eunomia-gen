@@ -17,11 +17,21 @@ RSpec.describe :example_treasure do
         alts: { "1" => { "en" => "a" }, "2" => { "en" => "a pair of" } },
         functions: ["pluralize"],
         items: [
-          { segments: %([3d10x10] copper coin), weight: 8, value: 1 },
-          { segments: %([3d8x10] silver coin), weight: 4, value: 10 },
-          { segments: %([2d6x10] electrum coin), weight: 3, value: 100 },
-          { segments: %([2d4x4] gold coin), weight: 2, value: 1000 },
-          { segments: %([2d4] platinum coin), weight: 1, value: 10_000 }
+          { segments: %([3d10x10] [random-metal] coin), weight: 1 },
+          { segments: %([3d8x10] [random-metal] coin), weight: 1 },
+          { segments: %([2d6x10] [random-metal] coin), weight: 2 },
+          { segments: %([2d4x4] [random-metal] coin), weight: 4 },
+          { segments: %([2d4] [random-metal] coin), weight: 8 }
+        ]
+      },
+      {
+        key: "random-metal",
+        items: [
+          { segments: "copper", weight: 8, value: 1 },
+          { segments: "silver", weight: 4, value: 10 },
+          { segments: "electrum", weight: 3, value: 100 },
+          { segments: "gold", weight: 2, value: 1000 },
+          { segments: "platinum", weight: 1, value: 10_000 }
         ]
       },
       {
@@ -53,9 +63,8 @@ RSpec.describe :example_treasure do
     request = Eunomia::Request.new("treasure-container")
     arr = []
     10.times do
-      result = request.generate
-      arr << [result.to_s, result.value]
+      arr << request.generate
     end
-    pp arr
+    pp arr[0].to_h
   end
 end

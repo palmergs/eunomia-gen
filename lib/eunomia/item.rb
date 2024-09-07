@@ -2,7 +2,8 @@
 
 module Eunomia
   class Item
-    attr_reader :weight,
+    attr_reader :key,
+                :weight,
                 :value,
                 :tags,
                 :alts,
@@ -11,7 +12,8 @@ module Eunomia
                 :sep,
                 :segments
 
-    def initialize(hsh)
+    def initialize(key, hsh)
+      @key = key
       hsh = { segments: hsh } if hsh.is_a?(String)
       @weight = hsh[:weight].to_i.clamp(1, 1000)
       @value = hsh[:value].to_i.clamp(0, 1_000_000)
@@ -43,7 +45,7 @@ module Eunomia
     end
 
     def generate(request)
-      result = Eunomia::Result.new(:item, value: value)
+      result = Eunomia::Result.new(key, value: value)
       result.merge_meta(meta)
       segments.each { |seg| result.append(seg.generate(request)) }
       all_alts = alts.merge(request.alts)

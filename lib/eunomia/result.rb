@@ -2,10 +2,10 @@
 
 module Eunomia
   class Result
-    attr_reader :source, :elements, :multiplier, :base_value, :meta
+    attr_reader :key, :display, :elements, :multiplier, :base_value, :meta
 
-    def initialize(source, value: 0, multiplier: 1)
-      @source = source
+    def initialize(key, value: 0, multiplier: 1)
+      @key = key
       @base_value = value
       @multiplier = multiplier
       @elements = []
@@ -18,6 +18,8 @@ module Eunomia
         append_element(obj)
       elsif obj.is_a?(Result)
         append_result(obj)
+      elsif obj.is_a?(Separator)
+        append_separator(obj)
       end
     end
 
@@ -27,6 +29,11 @@ module Eunomia
       @multiplier *= element.multiplier unless element.multiplier.nil?
       @base_value += element.value unless element.value.nil?
       merge_meta(element.meta)
+      self
+    end
+
+    def append_separator(separator)
+      @display += separator.to_s
       self
     end
 
@@ -72,7 +79,7 @@ module Eunomia
     end
 
     def to_h
-      { source:, value:, multiplier:, elements: elements.map(&:to_h) }
+      { display:, key:, value:, multiplier:, elements: elements&.map(&:to_h) }
     end
   end
 end

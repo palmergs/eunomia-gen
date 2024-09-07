@@ -6,7 +6,7 @@ module Eunomia
     class Text
       include Common
 
-      TEXT_MATCHER = /\p{Alpha}\p{Alnum}*/
+      TEXT_MATCHER = /\p{Alpha}[\p{Alnum}-]*/
 
       attr_reader :text
 

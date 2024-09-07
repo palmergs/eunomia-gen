@@ -22,7 +22,7 @@ module Eunomia
       @weight = 0
       @sep = hsh[:sep] || ""
       @selector = Eunomia::Selector.new(hsh[:rng])
-      @items = hsh[:items].map { |item| Eunomia::Item.new(item) }
+      @items = hsh[:items].map { |item| Eunomia::Item.new(@key, item) }
       raise "Generators must have items" if @items.empty?
     end
 
