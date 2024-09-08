@@ -9,9 +9,9 @@ module Eunomia
       @alt_key = alt_key
       @alts = alts || {}
       @meta = meta || {}
-      @tags = tags || {}
+      @tags = Set.new(tags || [])
       @constants = constants || {}
-      @functions = functions || {}
+      @functions = functions || []
       @depth = 0
       @unique = unique ? Set.new : nil
     end
@@ -37,16 +37,13 @@ module Eunomia
       @depth = 0
       gen = Eunomia.lookup(key)
 
-      tries = 0
-      loop do
+      100.times do
         result = gen.generate(self)
         result.apply(alts, functions)
-        return result unless @unique
-        return result if @unique.add?(result.to_s)
-
-        tries += 1
-        raise "Unable to find a unique result" if tries > 100
+        return result if !@unique || @unique.add?(result.to_s)
       end
+
+      raise "Unable to find a unique result"
     end
   end
 end

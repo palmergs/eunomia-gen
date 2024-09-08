@@ -50,11 +50,8 @@ module Eunomia
       return unless m
 
       m.each do |k, v|
-        if v.is_a?(Set)
-          @meta[k].merge(v)
-        else
-          @meta[k] << v
-        end
+        v = [v] unless v.is_a?(Enumerable)
+        @meta[k] = Set.new(@meta[k] + v).to_a
       end
     end
 
@@ -79,7 +76,7 @@ module Eunomia
     end
 
     def to_h
-      { display:, key:, value:, multiplier:, elements: elements&.map(&:to_h) }
+      { display:, key:, value:, multiplier:, meta:, elements: elements&.map(&:to_h) }
     end
   end
 end

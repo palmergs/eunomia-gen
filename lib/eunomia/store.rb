@@ -9,6 +9,10 @@ module Eunomia
       @generators[key] or raise Error, "Generator #{key} not found"
     end
 
+    def keys
+      @generators.keys
+    end
+
     def read(path)
       text = File.read(path)
       hsh_or_array = JSON.parse(text)

@@ -2,6 +2,8 @@
 
 module Eunomia
   class Item
+    include Eunomia::HashHelpers
+
     attr_reader :key,
                 :weight,
                 :value,
@@ -9,25 +11,19 @@ module Eunomia
                 :alts,
                 :meta,
                 :functions,
-                :sep,
                 :segments
 
-    def initialize(key, hsh)
+    def initialize(key, hsh, add_tags = nil)
       @key = key
-      hsh = { segments: hsh } if hsh.is_a?(String)
-      @weight = hsh[:weight].to_i.clamp(1, 1000)
-      @value = hsh[:value].to_i.clamp(0, 1_000_000)
-      @tags = hsh[:tags] || []
-      @alts = hsh[:alts] || {}
-      @meta = hsh[:meta] || {}
-      @functions = hsh[:functions] || []
-      @sep = hsh[:sep]
-      @segments = scan(hsh[:segments]).flatten
+      @weight = int_field(hsh, :weight).clamp(1, 1000)
+      @value = int_field(hsh, :value).clamp(0, 1_000_000)
+      @tags = tags_field(hsh)
+      @tags += add_tags if add_tags
+      @alts = alts_field(hsh)
+      @meta = meta_field(hsh)
+      @functions = list_field(hsh, :functions)
+      @segments = scan(field_or_raise(hsh, :segments)).flatten
       raise "Items must have segments" if @segments.empty?
-    end
-
-    def sep?
-      sep.present?
     end
 
     def scan(obj)

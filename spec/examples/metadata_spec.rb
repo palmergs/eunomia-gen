@@ -19,9 +19,10 @@ RSpec.describe :metadata_examples do
           { segments: "oak", meta: { "feature" => "forest" } },
           { segments: "elm", meta: { "feature" => "forest" } },
           { segments: "pine", meta: { "feature" => "forest" } },
-          { segments: "iron", meta: { "feature" => "mine" } },
-          { segments: "gold", meta: { "feature" => "mine" } },
-          { segments: "copper", meta: { "feature" => "mine" } }
+          { segments: "iron", meta: { "feature" => "mine", "resource" => "iron" } },
+          { segments: "gold", meta: { "feature" => "mine", "resource" => "gold" } },
+          { segments: "silver", meta: { "feature" => "mine", "resource" => "silver" } },
+          { segments: "copper", meta: { "feature" => "mine", "resource" => "copper" } }
         ]
       },
       {
@@ -31,7 +32,7 @@ RSpec.describe :metadata_examples do
           { segments: "ridge", meta: { "location" => "mountain" } },
           { segments: "field", meta: { "location" => "plain" } },
           { segments: "port", meta: { "location" => "coast", "feature" => "harbor" } },
-          { segments: "dam", meta: { "location" => "river" } },
+          { segments: "dam", meta: { "location" => "river", "feature" => "dam" } },
           { segments: "fall", meta: { "location" => "river", "feature" => "waterfall" } },
           { segments: "wood", meta: { "location" => "forest" } },
           { segments: "garden", meta: { "location" => "plain" } },

@@ -3,6 +3,7 @@
 require_relative "eunomia/version"
 require_relative "eunomia/selector"
 require_relative "eunomia/store"
+require_relative "eunomia/hash_helpers"
 require_relative "eunomia/generator"
 require_relative "eunomia/item"
 require_relative "eunomia/element"
@@ -34,6 +35,11 @@ module Eunomia
   def self.add(hsh_or_array)
     @@store ||= Store.new
     @@store.add(hsh_or_array)
+  end
+
+  def self.keys
+    @@store ||= Store.new
+    @@store.keys
   end
 
   def self.request(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {}, unique: false)

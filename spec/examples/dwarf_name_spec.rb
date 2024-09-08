@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "json"
 
 RSpec.describe :example_dwarf_names do
-  let(:json) do
+  let(:generators) do
     [
       {
         key: "dwarf-consonant",
@@ -46,6 +47,11 @@ RSpec.describe :example_dwarf_names do
         ]
       }
     ]
+  end
+
+  let(:json) do
+    str = JSON.pretty_generate(generators)
+    JSON.parse(str)
   end
 
   it "can build a generator from a hash" do
