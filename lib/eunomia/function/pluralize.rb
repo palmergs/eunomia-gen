@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   module Function
     # Pluralize attempts to pluralize the last word in the array

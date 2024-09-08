@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe :example_card_generator do
   let(:json) do
     [

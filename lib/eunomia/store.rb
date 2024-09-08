@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   # Store holds all the generators. Generators are stored by key.
   class Store

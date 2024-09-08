@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Eunomia::Generator do
   let(:tree_feminine) { %w[holly hazel willow aspen juniper magnolia olive] }
   let(:tree_masculine) { %w[larch ash rowan laurel linden filbert hawthorn] }

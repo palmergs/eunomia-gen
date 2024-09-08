@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   module HashHelpers
     def field_or_nil(hsh, key)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Eunomia::Generator do
   let(:arr) do
     [
