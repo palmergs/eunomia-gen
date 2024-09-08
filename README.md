@@ -77,7 +77,6 @@ request = Eunomia::Request.new("fruit", alt_key: "es", unique: true, alts: { "ki
 arr = []
 5.times { arr << request.generate.to_s }
 p arr.join(", ") # => "manzana, banana, orange, pear, a small flightless bird"
-
 ```
 
 ### Functions
@@ -106,6 +105,27 @@ p request.generate.to_s # => "3 sananab"
 request = Eunomia::Request.new("random-fruit", functions: %w[reverse pluralize])
 p request.generate.to_s # => "3 ikiks"
 ```
+
+### Weights
+
+Items can have a weight that determines the likelihood of being selected. The default weight is 1.
+
+### Unique
+
+A request has a unique flag, if set to true the request will add all generated strings to an internal
+set and will discard a string if it is already in the set. It will make up to 100 attempts to
+generate a unique string before raising an error.
+
+### Values
+
+Items can have a value that is an arbitrary integer. This is multiplied by the first segment in the
+generated string if it a number (e.g. a constant or randomly generated from a dice segment).
+If the first segment is not a number the multiplier defaults to 1.
+
+### Constants
+
+A constant hash can be added to the request. A string that matches the hash key will be replaced by the
+constant value.
 
 ## Development
 

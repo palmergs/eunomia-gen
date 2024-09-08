@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["G Palmer"]
   spec.email = ["palmergs@gmail.com"]
 
-  spec.summary = "Generate random strings from a JSON specification"
+  spec.summary = "Generate random strings from a hash specification"
   spec.description = "Create random string with a focus on RPGs similar to fantasynamegenerators.com"
   spec.homepage = "https://github.com/palmergs/eunomia_gen"
   spec.license = "MIT"
