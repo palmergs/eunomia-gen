@@ -55,13 +55,21 @@ module Eunomia
       end
     end
 
-    def apply(alts, functions, locale: nil)
+    def apply_translations(alts, locale: nil)
       arr = to_s.split(/\s+/)
       arr = arr.map do |segment|
-        ret = alts[segment]
-        ret = ret.is_a?(Hash) ? ret[locale] || ret['*'] || segment : ret || segment
+        hsh = alts[segment]
+        hsh = hsh.is_a?(Hash) ? hsh[locale] || hsh['*'] || segment : hsh || segment
       end
-      arr = Eunomia.apply(arr, functions)
+    end
+
+    def apply_functions(arr, functions)
+      Eunomia.apply(arr, functions)
+    end
+
+    def apply(alts, functions, locale: nil)
+      arr = apply_translations(alts, locale: locale)
+      arr = apply_functions(arr, functions)
 
       @display = arr.join(' ')
       self

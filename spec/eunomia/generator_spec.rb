@@ -29,4 +29,19 @@ RSpec.describe Eunomia::Generator do
     result = request.generate
     expect(result.to_s).to match(/^a+$/)
   end
+
+  it "can apply a pre-defined function" do
+    Eunomia.add(arr)
+    request = Eunomia::Request.new("gen-1", functions: ["capitalize"])
+    result = request.generate
+    expect(result.to_s).to match(/^Aa*$/)
+  end
+
+  it "can apply a custom function" do
+    Eunomia.add(arr)
+    Eunomia.add_function(:rot13, proc { |arr| arr.map { |str| str.tr("A-Za-z", "N-ZA-Mn-za-m") } })
+    request = Eunomia::Request.new("gen-1", functions: ["rot13"])
+    result = request.generate
+    expect(result.to_s).to match(/^n+$/)
+  end
 end

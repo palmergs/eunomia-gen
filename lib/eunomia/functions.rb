@@ -12,24 +12,24 @@ module Eunomia
   class Functions
     def initialize
       @functions = {
-        "capitalize" => Eunomia::Function::Capitalize.new,
-        "downcase" => Eunomia::Function::Downcase.new,
-        "pluralize" => Eunomia::Function::Pluralize.new,
-        "quote" => Eunomia::Function::Quote.new,
-        "titleize" => Eunomia::Function::Titleize.new,
-        "upcase" => Eunomia::Function::Upcase.new
+        "capitalize" => Eunomia::Function::Capitalize.new.to_proc,
+        "downcase" => Eunomia::Function::Downcase.new.to_proc,
+        "pluralize" => Eunomia::Function::Pluralize.new.to_proc,
+        "quote" => Eunomia::Function::Quote.new.to_proc,
+        "titleize" => Eunomia::Function::Titleize.new.to_proc,
+        "upcase" => Eunomia::Function::Upcase.new.to_proc
       }
     end
 
     def apply(arr, funcs)
       funcs.each do |function|
-        arr = @functions[function].apply(arr)
+        arr = @functions[function].call(arr)
       end
       arr
     end
 
-    def add(name, function)
-      @functions[name] = function
+    def add(name, proc)
+      @functions[name.to_s] = proc
     end
   end
 end

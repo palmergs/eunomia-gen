@@ -23,19 +23,16 @@ module Eunomia
         @range = range.to_i.clamp(1, 1_000_000)
         @op = OPS.include?(op) ? op : ADD
         @constant = constant.to_i.clamp(0, 1_000_000)
-        @value = nil
       end
 
       def roll
+        @multiplier = nil
         sum = 0
-        count.times do
-          sum += (rand(range) + 1)
-        end
+        count.times { sum += (rand(range) + 1) }
         sum
       end
 
       def calc
-        @multipler = nil
         case op
         when MULTIPLY
           roll * constant

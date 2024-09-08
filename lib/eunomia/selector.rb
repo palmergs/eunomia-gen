@@ -53,7 +53,7 @@ module Eunomia
     def roll
       sum = 0
       count.times { sum += rand(range) }
-      sum - count
+      sum
     end
   end
 end

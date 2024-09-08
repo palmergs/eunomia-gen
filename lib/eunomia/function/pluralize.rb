@@ -24,12 +24,18 @@ module Eunomia
       SINGLE = Set.new(%w[a an the this that my your his her its our their])
 
       def apply(arr)
-        num = to_num(arr[0])
-        return arr unless num != 1
+        to_proc.call(arr)
+      end
 
-        dc = arr[-1].downcase
-        arr[-1] = exceptions(dc) || others(dc) || ends_with_y(dc) || simple(dc)
-        arr
+      def to_proc
+        proc do |arr|
+          num = to_num(arr[0])
+          if num && num > 1
+            dc = arr[-1].downcase
+            arr[-1] = exceptions(dc) || others(dc) || ends_with_y(dc) || simple(dc)
+          end
+          arr
+        end
       end
 
       def to_num(str)

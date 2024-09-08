@@ -2,9 +2,16 @@
 
 module Eunomia
   module Function
+    # Downcase each string in the array
     class Downcase
       def apply(arr)
-        arr.map(&:downcase)
+        to_proc.call(arr)
+      end
+
+      def to_proc
+        proc do |arr|
+          arr.map(&:downcase)
+        end
       end
     end
   end
