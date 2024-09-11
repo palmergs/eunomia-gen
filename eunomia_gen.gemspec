@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Generate random strings from a hash specification"
   spec.description = "Create random string with a focus on RPGs similar to fantasynamegenerators.com"
-  spec.homepage = "https://github.com/palmergs/eunomia_gen"
+  spec.homepage = "https://github.com/palmergs/eunomia-gen"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
   spec.required_rubygems_version = ">= 3.3.11"
@@ -18,8 +18,8 @@ Gem::Specification.new do |spec|
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/palmergs/eunomia_gen"
-  spec.metadata["changelog_uri"] = "https://github.com/palmergs/eunomia_gen/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/palmergs/eunomia-gen"
+  spec.metadata["changelog_uri"] = "https://github.com/palmergs/eunomia-gen/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
