@@ -8,7 +8,8 @@ RSpec.describe :metadata_examples do
         functions: ["capitalize"],
         items: [
           "[city-founder][city-location]",
-          "[city-feature][city-location]"
+          "[city-feature][city-location]",
+          "[city-location][city-location]"
         ]
       },
       {
