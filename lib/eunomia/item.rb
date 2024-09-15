@@ -30,6 +30,7 @@ module Eunomia
     def available_tags
       @available_tags ||= begin
         s = Set.new
+        s += tags
         refs = segments.filter { |seg| seg.is_a?(Eunomia::Segment::Reference) }
         unless refs.empty?
           s = refs[0].item_tags
