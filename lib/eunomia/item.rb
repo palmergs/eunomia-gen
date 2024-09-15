@@ -30,7 +30,7 @@ module Eunomia
     def available_tags
       @available_tags ||= begin
         s = Set.new
-        refs = segments.filter { |seg| seg.is_a?(Eunomia::Reference) }
+        refs = segments.filter { |seg| seg.is_a?(Eunomia::Segment::Reference) }
         unless refs.empty?
           s = refs[0].item_tags
           refs[1..].each { |ref| s &= ref.item_tags }
@@ -48,8 +48,10 @@ module Eunomia
 
     def match_tags?(tags)
       return true if tags.nil? || tags.empty?
+      return true if (tags - self.tags).empty?
+      return true if (tags - available_tags).empty?
 
-      true if (tags - self.tags).empty?
+      false
     end
 
     def alt_for(key, segment)

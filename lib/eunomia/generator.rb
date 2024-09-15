@@ -49,7 +49,7 @@ module Eunomia
     def filter(tags)
       return items if tags.empty?
 
-      items.select { |item| item.match_tags?(tags) || item.match_tags?(item_tags) }
+      items.select { |item| item.match_tags?(tags) }
     end
 
     def generate(request)
