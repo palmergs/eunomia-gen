@@ -11,6 +11,7 @@ module Eunomia
                 :meta,
                 :functions,
                 :tags,
+                :item_tags,
                 :items,
                 :selector,
                 :sep
@@ -21,6 +22,7 @@ module Eunomia
       @alts = hash_field(hsh, :alts)
       @meta = meta_field(hsh)
       @tags = tags_field(hsh)
+      @item_tags = Set.new
       @selector = Eunomia::Selector.new(field_or_nil(hsh, :rng))
       @items = items_from(hsh)
       raise "Generators must have items" if @items.empty?
@@ -29,6 +31,9 @@ module Eunomia
     def items_from(hsh)
       list_field(hsh, :items).map do |item|
         item = { segments: item } if item.is_a?(String)
+        item_tags = item.fetch(:tags, [])
+        item_tags = [item_tags] unless item_tags.is_a?(Enumerable)
+        @item_tags += item_tags
         Eunomia::Item.new(@key, item, @tags)
       end
     end
@@ -44,7 +49,7 @@ module Eunomia
     def filter(tags)
       return items if tags.empty?
 
-      items.select { |item| (tags - item.tags).empty? }
+      items.select { |item| item.match_tags?(tags) || item.match_tags?(item_tags) }
     end
 
     def generate(request)

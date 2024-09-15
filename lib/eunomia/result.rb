@@ -55,6 +55,14 @@ module Eunomia
       end
     end
 
+    def add_tags_as_meta(tags)
+      tags.each do |tag|
+        arr = tag.split(':')
+        @meta[arr[0]] << arr[1] if arr.length > 1
+      end
+    end
+
+
     def apply_translations(alts, locale: nil)
       arr = to_s.split(/\s+/)
       arr = arr.map do |segment|

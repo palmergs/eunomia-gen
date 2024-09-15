@@ -7,17 +7,17 @@ RSpec.describe Eunomia::Generator do
   let(:name_generator) do
     {
       key: "first-name",
-      items: [{ segments: "[tree]", tags: %w[attribute:feminine attribute:masculine] }]
+      items: [{ segments: "[tree]" }]
     }
   end
 
   let(:json) do
     arr = [{ key: "tree", items: [] }]
     tree_feminine.each do |name|
-      arr[0][:items] << { segments: name, tags: "attribute:feminine" }
+      arr[0][:items] << { segments: name, tags: "name:feminine" }
     end
     tree_masculine.each do |name|
-      arr[0][:items] << { segments: name, tags: "attribute:masculine" }
+      arr[0][:items] << { segments: name, tags: "name:masculine" }
     end
     arr << name_generator
     arr
@@ -26,22 +26,20 @@ RSpec.describe Eunomia::Generator do
   it "can generate a name for a person with attributes" do
     Eunomia.add(json)
 
-    request = Eunomia::Request.new("first-name", tags: ["attribute:masculine"])
-    m = []
+    request = Eunomia::Request.new("first-name", tags: ["name:masculine"])
     5.times do
-      name = request.generate.to_s
+      gen = request.generate
+      expect(gen.meta["name"]).to eq(["masculine"])
+      name = gen.to_s
       expect(tree_masculine).to include(name.downcase)
-      m << name
     end
 
-    request = Eunomia::Request.new("first-name", tags: ["attribute:feminine"])
-    f = []
+    request = Eunomia::Request.new("first-name", tags: ["name:feminine"])
     5.times do
-      name = request.generate.to_s
+      gen = request.generate
+      expect(gen.meta["name"]).to eq(["feminine"])
+      name = gen.to_s
       expect(tree_feminine).to include(name.downcase)
-      f << name
     end
-
-    pp m + f
   end
 end

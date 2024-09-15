@@ -26,11 +26,19 @@ module Eunomia
         !label.nil?
       end
 
+      def generator
+        @generator ||= Eunomia.lookup(key)
+      end
+
+      def item_tags
+        generator.item_tags
+      end
+
       def generate(request)
         return Eunomia::Element.new(request.constants[lookup]) if request.constants.key?(lookup)
 
         request.increase_depth
-        Eunomia.generate(key, request)
+        generator.generate(request)
       end
 
       def lookup

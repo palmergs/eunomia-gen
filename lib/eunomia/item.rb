@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Eunomia
+  # Item represents a single selectable row of a generator.
   class Item
     include Eunomia::HashHelpers
 
@@ -17,13 +18,25 @@ module Eunomia
       @key = key
       @weight = int_field(hsh, :weight).clamp(1, 1000)
       @value = int_field(hsh, :value).clamp(0, 1_000_000)
-      @tags = tags_field(hsh)
-      @tags += add_tags if add_tags
       @alts = alts_field(hsh)
       @meta = meta_field(hsh)
       @functions = list_field(hsh, :functions)
       @segments = scan(field_or_raise(hsh, :segments)).flatten
-      raise "Items must have segments" if @segments.empty?
+      @tags = tags_field(hsh)
+      @tags += add_tags if add_tags
+      @available_tags = nil
+    end
+
+    def available_tags
+      @available_tags ||= begin
+        s = Set.new
+        refs = segments.filter { |seg| seg.is_a?(Eunomia::Reference) }
+        unless refs.empty?
+          s = refs[0].item_tags
+          refs[1..].each { |ref| s &= ref.item_tags }
+        end
+        s
+      end
     end
 
     def scan(obj)
@@ -31,6 +44,12 @@ module Eunomia
       return Eunomia::Segment.build(obj.to_s) unless obj.is_a?(Array)
 
       obj.map { |e| Eunomia::Segment.build(e) }.flatten
+    end
+
+    def match_tags?(tags)
+      return true if tags.nil? || tags.empty?
+
+      true if (tags - self.tags).empty?
     end
 
     def alt_for(key, segment)
@@ -45,6 +64,7 @@ module Eunomia
       segments.each { |seg| result.append(seg.generate(request)) }
       result.apply(alts, functions, locale: request.alt_key)
       result.merge_meta(meta)
+      result.add_tags_as_meta(tags)
       result
     end
   end
