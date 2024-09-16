@@ -125,6 +125,33 @@ If the first segment is not a number the multiplier defaults to 1.
 A constant hash can be added to the request. A string that matches the hash key will be replaced by the
 constant value.
 
+### Filtering
+
+Tags can be used to filter items. For example, some plant names are also used as names. So a list of
+plants could be filtered to only those that are also names to generate a character name. Tags assigned
+to an item are also added as metadat to the result if the tag is in `key:value` format.
+
+```ruby
+data = [
+  { key: "plant", items: %w[[flower] [tree]] },
+  { key: "flower", items: [
+      { segments: "rose", tags: %w[name:plant] },
+      { segments: "hydrangea" }
+    ]
+  },
+  { key: "tree", items: [
+      { segments: "ash", tags: %w[name:plant] },
+      { segments: "oak" }
+    ]
+  }
+]
+
+Eunomia.add(data)
+val = Eunomia.generate("plant", tags: %w[name:plant], functions: ["capitalize"])
+p val.to_s # => "Rose" or "Ash"
+p val.meta # => { "tag" => "name:plant" }
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec`

@@ -31,6 +31,9 @@ module Eunomia
       else
         gen = Eunomia::Generator.new(hsh_or_array)
         @generators[gen.key] = gen
+        gen.aliases.each do |alias_key|
+          @generators[alias_key] = gen
+        end
       end
     end
   end

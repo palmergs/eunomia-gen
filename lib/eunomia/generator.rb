@@ -7,6 +7,7 @@ module Eunomia
     include Eunomia::HashHelpers
 
     attr_reader :key,
+                :aliases,
                 :alts,
                 :meta,
                 :functions,
@@ -17,6 +18,7 @@ module Eunomia
 
     def initialize(hsh)
       @key = field_or_raise(hsh, :key)
+      @aliases = list_field(hsh, :aliases)
       @functions = list_field(hsh, :functions)
       @alts = hash_field(hsh, :alts)
       @meta = meta_field(hsh)
