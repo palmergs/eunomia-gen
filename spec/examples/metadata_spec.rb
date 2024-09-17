@@ -14,7 +14,8 @@ RSpec.describe :metadata_examples do
       },
       {
         key: "city-founder",
-        items: %w[knights kings queens earls]
+        items: %w[knights kings queens earls],
+        tags: %w[occupation:royal-person]
       },
       {
         key: "city-feature",

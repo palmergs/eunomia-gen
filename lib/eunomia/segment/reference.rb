@@ -13,7 +13,7 @@ module Eunomia
     class Reference
       include Common
 
-      REFERENCE_MATCHER = /^\[([A-Za-z][A-Za-z0-9_-]+)(?::([A-Za-z0-9_-]+))?\]/
+      REFERENCE_MATCHER = /^\[([_]?[A-Za-z][A-Za-z0-9_-]+)(?::([A-Za-z0-9_-]+))?\]/
 
       attr_reader :key, :label
 

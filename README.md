@@ -125,7 +125,7 @@ If the first segment is not a number the multiplier defaults to 1.
 A constant hash can be added to the request. A string that matches the hash key will be replaced by the
 constant value.
 
-### Filtering
+### Tags and Filtering
 
 Tags can be used to filter items. For example, some plant names are also used as names. So a list of
 plants could be filtered to only those that are also names to generate a character name. Tags assigned

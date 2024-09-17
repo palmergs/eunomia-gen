@@ -58,7 +58,7 @@ module Eunomia
     def add_tags_as_meta(tags)
       tags.each do |tag|
         arr = tag.split(':')
-        @meta[arr[0]] << arr[1] if arr.length > 1
+        @meta[arr[0]] << arr[1].gsub("-", " ") if arr.length > 1
       end
     end
 
