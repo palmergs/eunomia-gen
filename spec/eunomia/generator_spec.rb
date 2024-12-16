@@ -46,4 +46,9 @@ RSpec.describe Eunomia::Generator do
     result = request.generate
     expect(result.to_s).to match(/^n+$/)
   end
+
+  it "can render to a hash" do
+    gens = Eunomia.add(arr)
+    pp gens
+  end
 end

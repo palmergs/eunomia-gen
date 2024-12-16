@@ -70,5 +70,18 @@ module Eunomia
       result.add_tags_as_meta(tags)
       result
     end
+
+    def to_h
+      hsh = {
+        segments: segments.map(&:to_s).join,
+        weight: weight
+      }
+
+      hsh[:value] = value if value != 0
+      hsh[:tags] = tags.to_a unless tags.empty?
+      hsh[:meta] = meta unless meta.empty?
+      hsh[:functinos] = functions unless functions.empty?
+      hsh
+    end
   end
 end

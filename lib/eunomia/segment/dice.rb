@@ -54,6 +54,10 @@ module Eunomia
         @multiplier ||= calc
       end
 
+      def to_s
+        "#{count}d#{range}#{opp}#{constant}"
+      end
+
       def self.build(scanner)
         str = scanner.scan(DICE_MATCHER)
         return unless str

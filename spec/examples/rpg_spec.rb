@@ -46,7 +46,11 @@ RSpec.describe :example_rpg_attributes do
   end
 
   it "can generate an attribute list" do
-    Eunomia.add(json)
+    gen = Eunomia.add(json[0])
+    pp gen.to_h
+
+    Eunomia.add(json[1])
+
     request = Eunomia::Request.new("attributes")
     result = request.generate
     pp [result.to_s, result.value]

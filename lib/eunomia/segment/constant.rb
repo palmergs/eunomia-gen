@@ -18,6 +18,10 @@ module Eunomia
         Eunomia::Separator.new(text)
       end
 
+      def to_s
+        text
+      end
+
       def self.build(scanner)
         str = scanner.scan(SEPARATOR_MATCHER)
         new(str) if str

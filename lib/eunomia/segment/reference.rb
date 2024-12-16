@@ -45,6 +45,10 @@ module Eunomia
         @lookup ||= label.nil? ? key : "#{key}:#{label}"
       end
 
+      def to_s
+        "[#{lookup}]"
+      end
+
       def self.build(scanner)
         str = scanner.scan(REFERENCE_MATCHER)
         return unless str

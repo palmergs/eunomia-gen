@@ -14,8 +14,7 @@ module Eunomia
                 :tags,
                 :gen,
                 :items,
-                :selector,
-                :sep
+                :selector
 
     def initialize(hsh)
       @key = field_or_raise(hsh, :key)
@@ -94,6 +93,18 @@ module Eunomia
         result.append(item.generate(request))
       end
       result
+    end
+
+    def to_h
+      hsh = { key: key }
+      hsh[:aliases] = aliases unless aliases.empty?
+      hsh[:gen] = gen
+      hsh[:items] = items.map(&:to_h)
+      hsh[:tags] = tags.to_a unless tags.empty?
+      hsh[:alts] = alts unless alts.empty?
+      hsh[:meta] = meta unless meta.empty?
+      hsh[:functions] = functions unless functions.empty?
+      hsh
     end
   end
 end

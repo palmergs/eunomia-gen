@@ -14,6 +14,10 @@ module Eunomia
         @text = number.to_s
       end
 
+      def to_s
+        @text
+      end
+
       def self.build(scanner)
         str = scanner.scan(NUMBER_MATCHER)
         new(str) if str

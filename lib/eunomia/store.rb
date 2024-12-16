@@ -34,6 +34,7 @@ module Eunomia
         gen.aliases.each do |alias_key|
           @generators[alias_key] = gen
         end
+        gen
       end
     end
   end
