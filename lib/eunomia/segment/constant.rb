@@ -5,7 +5,7 @@ module Eunomia
     class Constant
       include Common
 
-      SEPARATOR_MATCHER = /\p{Space}|\p{Punct}/
+      SEPARATOR_MATCHER = /\p{Space}|\p{Punct}|[+]/
 
       attr_reader :text
 

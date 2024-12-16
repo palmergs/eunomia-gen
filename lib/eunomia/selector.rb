@@ -39,6 +39,14 @@ module Eunomia
       nil
     end
 
+    def sequence(items)
+      # Weights for a sequence are the chance of not appearing in the
+      # result
+      items.select do |item|
+        item.weight <= count.nil? ? rand(1..100) : roll
+      end
+    end
+
     def random(items)
       max_weight = items.map(&:weight).sum
       if count.nil? || count >= max_weight

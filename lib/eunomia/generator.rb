@@ -12,6 +12,7 @@ module Eunomia
                 :meta,
                 :functions,
                 :tags,
+                :gen,
                 :items,
                 :selector,
                 :sep
@@ -23,9 +24,18 @@ module Eunomia
       @alts = hash_field(hsh, :alts)
       @meta = meta_field(hsh)
       @tags = tags_field(hsh)
+      @gen = field_or_nil(hsh, :gen).to_s == "sequence" ? :sequence : :random
       @selector = Eunomia::Selector.new(field_or_nil(hsh, :rng))
       @items = items_from(hsh)
       raise "Generators must have items" if @items.empty?
+    end
+
+    def random?
+      gen == :random
+    end
+
+    def sequence?
+      !random?
     end
 
     def items_from(hsh)
@@ -59,12 +69,30 @@ module Eunomia
 
     def generate(request)
       items = filter(request.tags)
+      raise "no items matched tags" if items.empty?
+
+      if random?
+        generate_random(request, items)
+      else
+        generate_sequence(request, items)
+      end
+    end
+
+    def generate_random(request, items)
       item = selector.select(items)
       raise "No items found for #{key}" unless item
 
       result = item.generate(request)
       result.apply(alts, functions, locale: request.alt_key)
       result.merge_meta(meta)
+      result
+    end
+
+    def generate_sequence(request, items)
+      result = Eunomia::Result.new(key)
+      items.each do |item|
+        result.append(item.generate(request))
+      end
       result
     end
   end
