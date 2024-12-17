@@ -5,7 +5,7 @@ module Eunomia
     class Number
       include Common
 
-      NUMBER_MATCHER = /(\d+)/
+      NUMBER_MATCHER = /([+-]?\d+)/
 
       attr_reader :text, :multipler
 
@@ -15,7 +15,7 @@ module Eunomia
       end
 
       def to_s
-        @text
+        text
       end
 
       def self.build(scanner)

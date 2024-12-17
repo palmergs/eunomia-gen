@@ -58,10 +58,9 @@ module Eunomia
       end
     end
 
+    # zero-index roll of dice (e.g. 3d6 => 0..15)
     def roll
-      sum = 0
-      count.times { sum += rand(range) }
-      sum
+      (1..count).inject(0) { |sum, _| sum + rand(range) }
     end
   end
 end

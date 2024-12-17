@@ -14,7 +14,7 @@ module Eunomia
       end
 
       def generate(_request)
-        calc # update values for dynamic segments
+        # calc # update values for dynamic segments
         Eunomia::Separator.new(text)
       end
 

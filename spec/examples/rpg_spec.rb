@@ -8,15 +8,10 @@ RSpec.describe :example_rpg_attributes do
         gen: "sequence",
         items: [
           "[attribute-value] STR",
-          " ",
           "[attribute-value] CON",
-          " ",
           "[attribute-value] DEX",
-          " ",
           "[attribute-value] WIS",
-          " ",
           "[attribute-value] INT",
-          " ",
           "[attribute-value] CHR"
         ]
       },
@@ -49,11 +44,11 @@ RSpec.describe :example_rpg_attributes do
     gen = Eunomia.add(json[0])
     pp gen.to_h
 
-    Eunomia.add(json[1])
+    gen = Eunomia.add(json[1])
+    pp gen.to_h
 
     request = Eunomia::Request.new("attributes")
     result = request.generate
     pp [result.to_s, result.value]
-    pp result
   end
 end
