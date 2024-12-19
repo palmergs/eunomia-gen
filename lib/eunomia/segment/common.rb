@@ -14,7 +14,7 @@ module Eunomia
 
       def generate(_request)
         calc # update values for dynamic segments
-        Eunomia::Element.new(text, value: value, multiplier: multiplier)
+        Eunomia::Element.new(text, value:, multiplier:)
       end
 
       def calc; end

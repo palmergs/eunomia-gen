@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eunomia
   class Element
     attr_reader :orig, :str, :value, :multiplier, :meta, :children

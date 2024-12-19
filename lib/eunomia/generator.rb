@@ -96,7 +96,7 @@ module Eunomia
     end
 
     def to_h
-      hsh = { key: key }
+      hsh = { key: }
       hsh[:aliases] = aliases unless aliases.empty?
       hsh[:gen] = gen
       hsh[:items] = items.map(&:to_h)

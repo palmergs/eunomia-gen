@@ -9,16 +9,17 @@ module Eunomia
       @base_value = value
       @multiplier = multiplier
       @elements = []
-      @meta = Hash.new {|h,k| h[k] = Set.new}
+      @meta = Hash.new { |h, k| h[k] = Set.new }
       @display = ""
     end
 
     def append(obj)
-      if obj.is_a?(Element)
+      case obj
+      when Element
         append_element(obj)
-      elsif obj.is_a?(Result)
+      when Result
         append_result(obj)
-      elsif obj.is_a?(Separator)
+      when Separator
         append_separator(obj)
       end
     end
@@ -57,17 +58,16 @@ module Eunomia
 
     def add_tags_as_meta(tags)
       tags.each do |tag|
-        arr = tag.split(':')
+        arr = tag.split(":")
         @meta[arr[0]] << arr[1].gsub("-", " ") if arr.length > 1
       end
     end
 
-
     def apply_translations(alts, locale: nil)
       arr = to_s.split(/\s+/)
-      arr = arr.map do |segment|
+      arr.map do |segment|
         hsh = alts[segment]
-        hsh = hsh.is_a?(Hash) ? hsh[locale] || hsh['*'] || segment : hsh || segment
+        hsh.is_a?(Hash) ? hsh[locale] || hsh["*"] || segment : hsh || segment
       end
     end
 
@@ -76,10 +76,10 @@ module Eunomia
     end
 
     def apply(alts, functions, locale: nil)
-      arr = apply_translations(alts, locale: locale)
+      arr = apply_translations(alts, locale:)
       arr = apply_functions(arr, functions)
 
-      @display = arr.join(' ')
+      @display = arr.join(" ")
       self
     end
 

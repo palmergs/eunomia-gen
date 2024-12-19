@@ -13,7 +13,7 @@ module Eunomia
     end
 
     def to_h
-      { orig: text, text: text }
+      { orig: text, text: }
     end
   end
 end

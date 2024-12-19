@@ -63,7 +63,7 @@ module Eunomia
     end
 
     def generate(request)
-      result = Eunomia::Result.new(key, value: value)
+      result = Eunomia::Result.new(key, value:)
       segments.each { |seg| result.append(seg.generate(request)) }
       result.apply(alts, functions, locale: request.alt_key)
       result.merge_meta(meta)
@@ -74,7 +74,7 @@ module Eunomia
     def to_h
       hsh = {
         segments: segments.map(&:to_s).join,
-        weight: weight
+        weight:
       }
 
       hsh[:value] = value if value != 0

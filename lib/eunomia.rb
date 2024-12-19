@@ -24,7 +24,7 @@ module Eunomia
   end
 
   def self.generate(key, request = nil)
-    request = Request.new(key) unless request
+    request ||= Request.new(key)
     @@generators.lookup(key).generate(request)
   end
 
