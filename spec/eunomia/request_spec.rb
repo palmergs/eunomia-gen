@@ -43,7 +43,7 @@ RSpec.describe Eunomia::Request do
 
   it "can filter through nested generators" do
     Eunomia.add(gen)
-    req = Eunomia::Request.new("thing", tags: ["one:tag"])
+    req = described_class.new("thing", tags: ["one:tag"])
     val = req.generate
     expect(val.to_s).to eq("banana")
     expect(val.meta["one"]).to eq(["tag"])
@@ -52,7 +52,7 @@ RSpec.describe Eunomia::Request do
 
   it "can filter through a tag that is in multiple generators" do
     Eunomia.add(gen)
-    req = Eunomia::Request.new("thing", tags: ["tag:any"])
+    req = described_class.new("thing", tags: ["tag:any"])
     val = req.generate
     expect(%w[banana bird oak].include?(val.to_s)).to be true
     expect(val.meta["tag"]).to eq(["any"])

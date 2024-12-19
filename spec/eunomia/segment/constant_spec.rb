@@ -2,6 +2,3 @@
 
 require "spec_helper"
 require "strscan"
-
-RSpec.describe Eunomia::Segment::Constant do
-end

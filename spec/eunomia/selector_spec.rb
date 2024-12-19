@@ -5,9 +5,9 @@ require "spec_helper"
 RSpec.describe Eunomia::Selector do
   let(:weighted) { Struct.new(:weight, :text) }
 
-  it "should select an item" do
+  it "selects an item" do
     items = [weighted.new(1, "one"), weighted.new(2, "two"), weighted.new(3, "three")]
-    s = Eunomia::Selector.new
+    s = described_class.new
     expect(s.select(items)).to be_a(weighted)
   end
 
@@ -25,7 +25,7 @@ RSpec.describe Eunomia::Selector do
       weighted.new(1, "very rare")
     ]
     hst = Hash.new { |h, k| h[k] = 0 }
-    sel = Eunomia::Selector.new("3d4")
+    sel = described_class.new("3d4")
     1000.times { hst[sel.select(items).text] += 1 }
     pp hst
     expect(hst["very rare"]).to be > 0

@@ -5,14 +5,14 @@ require "strscan"
 
 RSpec.describe Eunomia::Segment::Dice do
   it "can calculate values" do
-    d = Eunomia::Segment::Dice.new(3, 6, "+", 3)
+    d = described_class.new(3, 6, "+", 3)
     expect(d.calc).to be >= 6
   end
 
   it "can build from a string" do
     ss = StringScanner.new("[d4]")
-    d = Eunomia::Segment::Dice.build(ss)
-    expect(d).to_not be_nil
+    d = described_class.build(ss)
+    expect(d).not_to be_nil
     expect(d.count).to eq(1)
     expect(d.range).to eq(4)
     expect(d.op).to eq("+")
@@ -34,8 +34,8 @@ RSpec.describe Eunomia::Segment::Dice do
     ]
     tests.each do |test|
       ss = StringScanner.new(test[0])
-      d = Eunomia::Segment::Dice.build(ss)
-      expect(d).to_not be_nil
+      d = described_class.build(ss)
+      expect(d).not_to be_nil
       expect(d.count).to eq(test[1])
       expect(d.range).to eq(test[2])
       expect(d.op).to eq(test[3])

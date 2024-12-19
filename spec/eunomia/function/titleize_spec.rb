@@ -7,7 +7,7 @@ RSpec.describe Eunomia::Function::Titleize do
       "the grade was an a" => "The Grade Was an A"
     }
 
-    f = Eunomia::Function::Titleize.new
+    f = described_class.new
     tests.each_pair do |s, x|
       expect(f.apply(s.split(/\s+/)).join(" ")).to eq(x)
     end

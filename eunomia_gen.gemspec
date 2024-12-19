@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "Create random string with a focus on RPGs similar to fantasynamegenerators.com"
   spec.homepage = "https://github.com/palmergs/eunomia-gen"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = ">= 3.2.0"
   spec.required_rubygems_version = ">= 3.3.11"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
