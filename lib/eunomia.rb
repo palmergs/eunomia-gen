@@ -13,35 +13,34 @@ require_relative "eunomia/result"
 require_relative "eunomia/segment"
 require_relative "eunomia/functions"
 
+# A random data generator
 module Eunomia
-  class Error < StandardError; end
-
-  @@functions = Functions.new
-  @@generators = Store.new
+  @functions = Functions.new
+  @generators = Store.new
 
   def self.lookup(key)
-    @@generators.lookup(key)
+    @generators.lookup(key)
   end
 
   def self.generate(key, request = nil)
     request ||= Request.new(key)
-    @@generators.lookup(key).generate(request)
+    @generators.lookup(key).generate(request)
   end
 
   def self.read(path)
-    @@generators.read(path)
+    @generators.read(path)
   end
 
   def self.add(hsh_or_array)
-    @@generators.add(hsh_or_array)
+    @generators.add(hsh_or_array)
   end
 
   def self.add_function(name, function)
-    @@functions.add(name, function)
+    @functions.add(name, function)
   end
 
   def self.keys
-    @@generators.keys
+    @generators.keys
   end
 
   def self.request(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {}, unique: false)
@@ -49,6 +48,6 @@ module Eunomia
   end
 
   def self.apply(arr, functions)
-    @@functions.apply(arr, functions)
+    @functions.apply(arr, functions)
   end
 end

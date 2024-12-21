@@ -49,6 +49,7 @@ RSpec.describe Eunomia::Generator do
 
   it "can render to a hash" do
     gens = Eunomia.add(arr)
+    expect(gens).not_to be_nil
     pp gens
   end
 end

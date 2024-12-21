@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe :example_card_generator do
+RSpec.describe "Example playing card generation", type: :feature do
   let(:json) do
     [
       {

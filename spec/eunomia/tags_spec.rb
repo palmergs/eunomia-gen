@@ -28,8 +28,7 @@ RSpec.describe Eunomia::Generator do
     arr
   end
 
-  it "can generate a name for a person with attributes" do
-    pp json
+  it "can generate a name for a person with masculine attributes" do
     Eunomia.add(json)
 
     request = Eunomia::Request.new("first-name", tags: ["name:masculine"])
@@ -37,16 +36,18 @@ RSpec.describe Eunomia::Generator do
       gen = request.generate
       expect(gen.meta["name"]).to eq(["masculine"])
       name = gen.to_s
-      p name
       expect(tree_masculine).to include(name.downcase)
     end
+  end
+
+  it "can generate a name for a person with feminine attributes" do
+    Eunomia.add(json)
 
     request = Eunomia::Request.new("first-name", tags: ["name:feminine"])
     5.times do
       gen = request.generate
       expect(gen.meta["name"]).to eq(["feminine"])
       name = gen.to_s
-      p name
       expect(tree_feminine).to include(name.downcase)
     end
   end

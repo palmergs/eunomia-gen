@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Eunomia
+  # Encapsuate a request for string generation
   class Request
     attr_reader :key, :alt_key, :alts, :meta, :tags, :functions, :constants, :depth
 

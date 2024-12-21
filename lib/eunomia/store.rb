@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Eunomia
+  class EunomiaKeyNotFoundError < StandardError; end
+
   # Store holds all the generators. Generators are stored by key.
   class Store
     def initialize
@@ -8,7 +10,7 @@ module Eunomia
     end
 
     def lookup(key)
-      @generators[key] or raise Error, "Generator #{key} not found"
+      @generators[key] or raise EunomiaKeyNotFoundError, "Generator #{key} not found"
     end
 
     def keys

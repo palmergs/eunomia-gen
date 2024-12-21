@@ -2,6 +2,7 @@
 
 module Eunomia
   module Segment
+    # Represents a constant in a segment.
     class Constant
       include Common
 

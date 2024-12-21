@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe :example_treasure do
+RSpec.describe "Example treasure generation", type: :feature do
   let(:json) do
     [
       {
@@ -66,6 +66,8 @@ RSpec.describe :example_treasure do
   it "can generate a treasure description" do
     Eunomia.add(json)
     request = Eunomia::Request.new("treasure-container")
-    pp request.generate.to_h
+    result = request.generate
+    expect(result.key).to eq("treasure-container")
+    pp result.to_h
   end
 end

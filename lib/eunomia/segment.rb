@@ -10,6 +10,8 @@ require_relative "segment/number"
 require_relative "segment/reference"
 
 module Eunomia
+  class EunomiaParseError < StandardError; end
+
   # Segment represents a single token in an `Item`.
   module Segment
     def self.build(str)
@@ -21,7 +23,7 @@ module Eunomia
               Eunomia::Segment::Number.build(ss) ||
               Eunomia::Segment::Text.build(ss) ||
               Eunomia::Segment::Constant.build(ss)
-        raise "Unable to parse #{ss.rest} (#{ss.rest_size})" unless seg
+        raise EunomiaParseError, "Unable to parse #{ss.rest} (#{ss.rest_size})" unless seg
 
         arr << seg
       end

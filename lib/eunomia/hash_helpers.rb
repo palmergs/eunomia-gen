@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Eunomia
+  # Lookup methods for hashes to kandle symbol and string keys
   module HashHelpers
     def field_or_nil(hsh, key)
       hsh[key.to_sym] || hsh[key.to_s]

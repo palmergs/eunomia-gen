@@ -3,7 +3,7 @@
 require "spec_helper"
 require "json"
 
-RSpec.describe :example_dwarf_names do
+RSpec.describe "Example dwarf name generation", type: :feature do
   let(:generators) do
     [
       {

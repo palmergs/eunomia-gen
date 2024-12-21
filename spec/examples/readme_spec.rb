@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe :readme_example do
+RSpec.describe "Examples from README", type: :feature do
   it "runs the usage example from the README.md file" do
     data = [
       {

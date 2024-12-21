@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe :metadata_examples do
+RSpec.describe "Examples with metadata", type: :feature do
   let(:json) do
     [
       {
@@ -54,6 +54,7 @@ RSpec.describe :metadata_examples do
       result = request.generate
       arr << [result.to_s, result.meta]
     end
+    expect(arr.size).to eq(10)
     pp arr
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Eunomia
+  # A generated result
   class Result
     attr_reader :key, :display, :elements, :multiplier, :base_value, :meta
 

@@ -2,6 +2,8 @@
 
 module Eunomia
   module Segment
+    # Represents a number in a segment. The value
+    # is the multiplier for the item.
     class Number
       include Common
 

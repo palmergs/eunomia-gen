@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe :example_rpg_attributes do
+RSpec.describe "Example D&D-style attributes", type: :feature do
   let(:json) do
     [
       {
