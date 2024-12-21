@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 require: rubocop-rspec
 
 AllCops:
@@ -16,7 +18,3 @@ RSpec/ExampleLength:
 
 RSpec/MultipleExpectations:
   Max: 5
-
-RSpec/NoExpectationExample:
-  Exclude:
-    - spec/examples/**/*.rb
