@@ -96,10 +96,9 @@ module Eunomia
     end
 
     def to_h
-      hsh = { key: }
+      hsh = { key:, gen:, items: items.map(&:to_h) }
       hsh[:aliases] = aliases unless aliases.empty?
-      hsh[:gen] = gen
-      hsh[:items] = items.map(&:to_h)
+      hsh[:rng] = selector if selector.count
       hsh[:tags] = tags.to_a unless tags.empty?
       hsh[:alts] = alts unless alts.empty?
       hsh[:meta] = meta unless meta.empty?
