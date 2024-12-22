@@ -62,5 +62,9 @@ module Eunomia
     def roll
       (1..count).inject(0) { |sum, _| sum + rand(range) }
     end
+
+    def to_s
+      count ? "#{count}d#{range}" : "random"
+    end
   end
 end
