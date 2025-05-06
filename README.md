@@ -101,7 +101,7 @@ request = Eunomia::Request.new("random-fruit", functions: %w[pluralize reverse])
 p request.generate.to_s # => "3 sananab"
 
 request = Eunomia::Request.new("random-fruit", functions: %w[reverse pluralize])
-p request.generate.to_s # => "3 ikiks"
+p request.generate.to_s # => "3 iwiks"
 ```
 
 ### Weights
