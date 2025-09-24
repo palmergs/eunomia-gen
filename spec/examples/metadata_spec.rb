@@ -14,8 +14,12 @@ RSpec.describe "Examples with metadata", type: :feature do
       },
       {
         key: "city-founder",
-        items: %w[knights kings queens earls],
-        tags: %w[occupation:royal-person]
+        items: [
+          { segments: "knights", meta: { "founder" => "soldier" } },
+          { segments: "kings", meta: { "founder" => %w[royalty male] } },
+          { segments: "queens", meta: { "founder" => %w[royalty female] } },
+          { segments: "earls", meta: { "founder" => { "occupation" => "nobility" } } }
+        ]
       },
       {
         key: "city-feature",
@@ -56,5 +60,12 @@ RSpec.describe "Examples with metadata", type: :feature do
     end
     expect(arr.size).to eq(10)
     pp arr
+  end
+
+  it "can generate a city founded by a knight" do
+    Eunomia.add(json)
+    request = Eunomia::Request.new("city-name", unique: true, tags: "founder:knight")
+    result = request.generate
+    pp [result.to_s, result.meta]
   end
 end

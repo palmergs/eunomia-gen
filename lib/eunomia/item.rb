@@ -65,7 +65,7 @@ module Eunomia
     def generate(request)
       result = Eunomia::Result.new(key, value:)
       segments.each { |seg| result.append(seg.generate(request)) }
-      result.apply(alts, functions, locale: request.alt_key)
+      result.apply(alts, functions, locale: request.locale)
       result.merge_meta(meta)
       result.add_tags_as_meta(tags)
       result

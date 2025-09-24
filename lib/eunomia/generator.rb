@@ -6,22 +6,36 @@ module Eunomia
   class Generator
     include Eunomia::HashHelpers
 
-    attr_reader :key,
-                :aliases,
-                :alts,
-                :meta,
-                :functions,
-                :tags,
-                :gen,
-                :items,
-                :selector
+    # Normalized identifier for this generator
+    attr_reader :key
+
+    # Key value pairs of string values to swap out for this generator results
+    attr_reader :alts
+
+    # Key vaule pair of generator keys to values; if the key is seen the value is replaced
+    # with the constant value
+    attr_reader :constants
+
+    # Functions to apply to the generated string from this generator
+    attr_reader :functions
+
+    # Tags that must match to the item tags to be selected
+    attr_reader :tags
+
+    # Are the items selected in order (sequence) or random
+    attr_reader :gen
+
+    # The items in this generator
+    attr_reader :items
+
+    # The random number generator used to select items
+    attr_reader :selector
 
     def initialize(hsh)
       @key = field_or_raise(hsh, :key)
-      @aliases = list_field(hsh, :aliases)
       @functions = list_field(hsh, :functions)
       @alts = hash_field(hsh, :alts)
-      @meta = meta_field(hsh)
+      @constants = hash_field(hsh, :constants)
       @tags = tags_field(hsh)
       @gen = field_or_nil(hsh, :gen).to_s == "sequence" ? :sequence : :random
       @selector = Eunomia::Selector.new(field_or_nil(hsh, :rng))
@@ -82,8 +96,7 @@ module Eunomia
       raise "No items found for #{key}" unless item
 
       result = item.generate(request)
-      result.apply(alts, functions, locale: request.alt_key)
-      result.merge_meta(meta)
+      result.apply(alts, functions, locale: request.locale)
       result
     end
 
@@ -97,11 +110,9 @@ module Eunomia
 
     def to_h
       hsh = { key:, gen:, items: items.map(&:to_h) }
-      hsh[:aliases] = aliases unless aliases.empty?
       hsh[:rng] = selector if selector.count
       hsh[:tags] = tags.to_a unless tags.empty?
       hsh[:alts] = alts unless alts.empty?
-      hsh[:meta] = meta unless meta.empty?
       hsh[:functions] = functions unless functions.empty?
       hsh
     end

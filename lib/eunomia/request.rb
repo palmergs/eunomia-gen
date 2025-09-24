@@ -2,31 +2,23 @@
 
 module Eunomia
   # Encapsuate a request for string generation
-  class Request
-    attr_reader :key, :alt_key, :alts, :meta, :tags, :functions, :constants, :depth
+  class Request < Eunomia::Generator
+    # If not nil, a set of value strings; this is
+    # Persisted across calls to generate
+    attr_reader :unique
 
-    def initialize(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {}, unique: false)
-      @key = key
-      @alt_key = alt_key
-      @alts = alts || {}
-      @meta = meta || {}
-      @tags = Set.new(tags || [])
-      @constants = constants || {}
-      @functions = functions || []
-      @depth = 0
+    # If given, alts are chosen from the given locale key
+    attr_reader :locale
+
+    # The current depth (calls to generate) for the run
+    attr_reader :depth
+
+    def initialize(key, alts: {}, locale: nil, constants: {}, tags: [], functions: [], unique: false)
+      hsh = { key:, items: ["request"], alts:, constants:, tags:, gen: "sequence", functions: }
       @unique = unique ? Set.new : nil
-    end
-
-    def generate_unique?
-      !@unique.nil?
-    end
-
-    def alt_key?
-      !alt_key.nil?
-    end
-
-    def alt_for(segment)
-      alts[segment] || segment
+      @depth = 0
+      @locale = locale
+      super(hsh)
     end
 
     def increase_depth
@@ -41,7 +33,7 @@ module Eunomia
       100.times do
         result = gen.generate(self)
         result.apply(alts, functions)
-        return result if !@unique || @unique.add?(result.to_s)
+        return result if !unique || unique.add?(result.to_s)
       end
 
       raise "Unable to find a unique result"

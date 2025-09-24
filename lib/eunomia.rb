@@ -43,8 +43,8 @@ module Eunomia
     @generators.keys
   end
 
-  def self.request(key, alts: {}, alt_key: nil, meta: {}, tags: [], functions: [], constants: {}, unique: false)
-    Request.new(key, alts:, alt_key:, meta:, tags:, functions:, constants:, unique:)
+  def self.request(key, alts: {}, locale: nil, tags: [], functions: [], constants: {}, unique: false)
+    Request.new(key, alts:, locale:, tags:, functions:, constants:, unique:)
   end
 
   def self.apply(arr, functions)
