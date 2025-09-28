@@ -24,7 +24,7 @@ RSpec.describe "Example dwarf name generation", type: :feature do
       },
       {
         key: "dwarf-name",
-        tags: ["name:first", "tolkien:dwarf", "rpg:dwarf"],
+        meta: { "name" => "first", "race" => "dwarf" },
         functions: ["capitalize"],
         items: [
           {
@@ -41,7 +41,7 @@ RSpec.describe "Example dwarf name generation", type: :feature do
       },
       {
         key: "dwarf-name-with-parent",
-        tags: ["name:first", "tolkien:dwarf", "rpg:dwarf"],
+        meta: { "name" => "first", "race" => "dwarf" },
         items: [
           "[dwarf-name] son of [dwarf-name:parent]"
         ]

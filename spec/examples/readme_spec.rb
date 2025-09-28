@@ -28,7 +28,7 @@ RSpec.describe "Examples from README", type: :feature do
     ]
 
     Eunomia.add(data)
-    request = Eunomia::Request.new("fruit", alt_key: "es", unique: true, alts: { "kiwi" => "a small flightless bird" })
+    request = Eunomia::Request.new("fruit", locale: "es", unique: true, alts: { "kiwi" => "a small flightless bird" })
     arr = []
     5.times { arr << request.generate.to_s }
     p arr.join(", ") # => "manzana, banana, orange, pear, a small flightless bird"

@@ -54,13 +54,7 @@ RSpec.describe "Example playing card generation", type: :feature do
     Eunomia.add(json)
     request = Eunomia::Request.new(
       "playing-card",
-      alts: {
-        "hearts" => "hearts",
-        "clubs" => "clover",
-        "spades" => "pikes",
-        "diamonds" => "tiles"
-      },
-      alt_key: "es"
+      locale: "es"
     )
     arr = []
     10.times do

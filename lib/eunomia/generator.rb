@@ -6,23 +6,39 @@ module Eunomia
   class Generator
     include Eunomia::HashHelpers
 
-    attr_reader :key,
-                :aliases,
-                :alts,
-                :meta,
-                :functions,
-                :tags,
-                :gen,
-                :items,
-                :selector
+    PASS_FILTER_ATTEMPTS = 20
+
+    # Normalized identifier for this generator
+    attr_reader :key
+
+    # Key value pairs of string values to swap out for this generator results
+    attr_reader :alts
+
+    # Key vaule pair of generator keys to values; if the key is seen the value is replaced
+    # with the constant value
+    attr_reader :constants
+
+    # Functions to apply to the generated string from this generator
+    attr_reader :functions
+
+    # Filters are key value paris that must match the generated metadata to be selected
+    attr_reader :filters
+
+    # Are the items selected in order (sequence) or random
+    attr_reader :gen
+
+    # The items in this generator
+    attr_reader :items
+
+    # The random number generator used to select items
+    attr_reader :selector
 
     def initialize(hsh)
       @key = field_or_raise(hsh, :key)
-      @aliases = list_field(hsh, :aliases)
       @functions = list_field(hsh, :functions)
       @alts = hash_field(hsh, :alts)
-      @meta = meta_field(hsh)
-      @tags = tags_field(hsh)
+      @constants = hash_field(hsh, :constants)
+      @filters = filters_field(hsh)
       @gen = field_or_nil(hsh, :gen).to_s == "sequence" ? :sequence : :random
       @selector = Eunomia::Selector.new(field_or_nil(hsh, :rng))
       @items = items_from(hsh)
@@ -40,15 +56,7 @@ module Eunomia
     def items_from(hsh)
       list_field(hsh, :items).map do |item|
         item = { segments: item } if item.is_a?(String)
-        Eunomia::Item.new(@key, item, @tags)
-      end
-    end
-
-    def item_tags
-      @item_tags ||= begin
-        set = Set.new
-        items.each { |item| set += item.available_tags }
-        set
+        Eunomia::Item.new(@key, item)
       end
     end
 
@@ -59,22 +67,32 @@ module Eunomia
       alts[key][segment] || segment
     end
 
-    # Select items that have all the given tag values
-    def filter(tags)
-      return items if tags.empty?
+    def passes_filters?(result)
+      return true if filters.empty?
 
-      items.select { |item| item.match_tags?(tags) }
+      # For every filter defined on this generator
+      filters.all? do |key, values|
+        found = result.meta[key]
+        found && (values.include?("*") || found.any? { |f| values.include?(f) })
+      end
     end
 
     def generate(request)
-      items = filter(request.tags)
-      raise "no items matched tags" if items.empty?
+      trys = PASS_FILTER_ATTEMPTS
 
-      if random?
-        generate_random(request, items)
-      else
-        generate_sequence(request, items)
+      loop do
+        trys -= 1
+        break if trys <= 0
+
+        result = if random?
+                   generate_random(request, items)
+                 else
+                   generate_sequence(request, items)
+                 end
+        return result if passes_filters?(result)
       end
+
+      raise "Unable to generate a filtered result after #{PASS_FILTER_ATTEMPTS} attempts"
     end
 
     def generate_random(request, items)
@@ -82,8 +100,7 @@ module Eunomia
       raise "No items found for #{key}" unless item
 
       result = item.generate(request)
-      result.apply(alts, functions, locale: request.alt_key)
-      result.merge_meta(meta)
+      result.apply(alts, functions, locale: request.locale)
       result
     end
 
@@ -97,11 +114,9 @@ module Eunomia
 
     def to_h
       hsh = { key:, gen:, items: items.map(&:to_h) }
-      hsh[:aliases] = aliases unless aliases.empty?
       hsh[:rng] = selector if selector.count
-      hsh[:tags] = tags.to_a unless tags.empty?
+      hsh[:filters] = filters_to_tags(filters) unless filters.empty?
       hsh[:alts] = alts unless alts.empty?
-      hsh[:meta] = meta unless meta.empty?
       hsh[:functions] = functions unless functions.empty?
       hsh
     end
