@@ -26,11 +26,16 @@ module Eunomia
       field.is_a?(String) ? field.split(/\s+/) : field
     end
 
-    def tags_field(hsh)
-      tags = list_field(hsh, :tags)
-      return Set.new unless tags
+    def filters_field(hsh)
+      tags = list_field(hsh, :filters)
+      tags.each_with_object({}) do |tag, filters|
+        key, values = tag.split(":")
+        filters[key] = Set.new(values.split(","))
+      end
+    end
 
-      Set.new(tags)
+    def filters_to_tags(hsh)
+      hsh.to_a.map { |k, v| "#{k}:#{v.join(",")}" }.join(" ")
     end
 
     def alts_field(hsh)

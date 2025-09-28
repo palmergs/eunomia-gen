@@ -7,9 +7,25 @@ RSpec.describe "Examples with metadata", type: :feature do
         key: "city-name",
         functions: ["capitalize"],
         items: [
-          "[city-founder][city-location]",
-          "[city-feature][city-location]",
-          "[city-location][city-location]"
+          { segments: "[base-city-name]", weight: 10 },
+          { segments: "fort [base-city-name]", meta: { "feature" => "fort" } },
+          { segments: "[descriptor] [base-city-name]" }
+        ]
+      },
+      {
+        key: "descriptor",
+        items: %w[north south east west upper lower new]
+      },
+      {
+        key: "base-city-name",
+        items: [
+          { segments: "[city-founder][city-location]" },
+          { segments: "[city-founder][city-size]" },
+          { segments: "[city-feature][city-location]" },
+          { segments: "[city-location][city-size]" },
+          { segments: "[city-feature][city-location]" },
+          { segments: "[city-location][city-size]" }
+
         ]
       },
       {
@@ -18,7 +34,9 @@ RSpec.describe "Examples with metadata", type: :feature do
           { segments: "knights", meta: { "founder" => "soldier" } },
           { segments: "kings", meta: { "founder" => %w[royalty male] } },
           { segments: "queens", meta: { "founder" => %w[royalty female] } },
-          { segments: "earls", meta: { "founder" => { "occupation" => "nobility" } } }
+          { segments: "earls", meta: { "founder" => "nobility" } },
+          { segments: "dukes", meta: { "founder" => "nobility" } },
+          { segments: "wardens", meta: { "founder" => "soldier" } }
         ]
       },
       {
@@ -30,21 +48,40 @@ RSpec.describe "Examples with metadata", type: :feature do
           { segments: "iron", meta: { "feature" => "mine", "resource" => "iron" } },
           { segments: "gold", meta: { "feature" => "mine", "resource" => "gold" } },
           { segments: "silver", meta: { "feature" => "mine", "resource" => "silver" } },
-          { segments: "copper", meta: { "feature" => "mine", "resource" => "copper" } }
+          { segments: "copper", meta: { "feature" => "mine", "resource" => "copper" } },
+          { segments: "guards", meta: { "feature" => "fort", "founder" => "soldier" } },
+          "green",
+          "white",
+          "black",
+          "grey",
+          "red"
         ]
+      },
+      {
+        key: "city-size",
+        items: %w[burg borough town ville]
       },
       {
         key: "city-location",
         items: [
           { segments: "dale", meta: { "location" => "valley" } },
+          { segments: "bridge", meta: { "location" => "river" } },
           { segments: "ridge", meta: { "location" => "mountain" } },
           { segments: "field", meta: { "location" => "plain" } },
+          { segments: "meadow", meta: { "location" => "plain" } },
+          { segments: "yard", meta: { "location" => "plain" } },
           { segments: "port", meta: { "location" => "coast", "feature" => "harbor" } },
           { segments: "dam", meta: { "location" => "river", "feature" => "dam" } },
           { segments: "fall", meta: { "location" => "river", "feature" => "waterfall" } },
           { segments: "wood", meta: { "location" => "forest" } },
+          { segments: "park", meta: { "location" => "forest" } },
+          { segments: "grove", meta: { "location" => "forest" } },
+          { segments: "brake", meta: { "location" => "forest" } },
+          { segments: "wild", meta: { "location" => "forest" } },
+          { segments: "hedge", meta: { "location" => "forest" } },
           { segments: "garden", meta: { "location" => "plain" } },
-          { segments: "shore", meta: { "location" => "coast" } }
+          { segments: "shore", meta: { "location" => "coast" } },
+          { segments: "guard", meta: { "feature" => "fort" } }
         ]
       }
     ]
@@ -64,8 +101,9 @@ RSpec.describe "Examples with metadata", type: :feature do
 
   it "can generate a city founded by a knight" do
     Eunomia.add(json)
-    request = Eunomia::Request.new("city-name", unique: true, tags: "founder:knight")
+    request = Eunomia::Request.new("city-name", unique: true, filters: "founder:soldier")
     result = request.generate
-    pp [result.to_s, result.meta]
+    pp result.to_h
+    expect(result.meta["founder"]).to include("soldier")
   end
 end

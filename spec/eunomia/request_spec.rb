@@ -13,7 +13,7 @@ RSpec.describe Eunomia::Request do
         key: "one",
         items: [
           "apple",
-          { segments: "banana", tags: ["one:tag", "tag:any"] },
+          { segments: "banana", meta: { "one" => "tag", "tag" => "any" } },
           "cherry"
         ]
       },
@@ -22,28 +22,27 @@ RSpec.describe Eunomia::Request do
         items: [
           "dog",
           "cat",
-          { segments: "bird", tags: ["two:tag", "tag:any"] }
+          { segments: "bird", meta: { "two" => "tag", "tag" => "any" } }
         ]
       },
       { key: "tree",
         items: [
-          { segments: "oak", tags: ["three:tag", "tag:any"] },
+          { segments: "oak", meta: { "three" => "tag", "tag" => "any" } },
           "elm",
           "maple"
         ] }
     ]
   end
 
-  it "has available tags" do
+  it "has available filters" do
     Eunomia.add(gen)
     tmp = Eunomia.lookup("thing")
-    pp tmp.tags
-    pp tmp.item_tags
+    pp tmp.filters
   end
 
   it "can filter through nested generators" do
     Eunomia.add(gen)
-    req = described_class.new("thing", tags: ["one:tag"])
+    req = described_class.new("thing", filters: ["one:tag"])
     val = req.generate
     expect(val.to_s).to eq("banana")
     expect(val.meta["one"]).to eq(["tag"])
@@ -52,7 +51,7 @@ RSpec.describe Eunomia::Request do
 
   it "can filter through a tag that is in multiple generators" do
     Eunomia.add(gen)
-    req = described_class.new("thing", tags: ["tag:any"])
+    req = described_class.new("thing", filters: ["tag:any"])
     val = req.generate
     expect(%w[banana bird oak].include?(val.to_s)).to be true
     expect(val.meta["tag"]).to eq(["any"])

@@ -7,7 +7,7 @@ RSpec.describe "Example treasure generation", type: :feature do
         key: "treasure-container",
         items: [
           {
-            segments: %("a small chest containing [random-coin] and [random-gem]"),
+            segments: %("a small chest containing [random-coin-stack] and [random-gem]"),
             meta: { "item" => "chest-small-wooden" }
           },
           "a linen sack containing [random-coin-stack]",
@@ -32,11 +32,13 @@ RSpec.describe "Example treasure generation", type: :feature do
       {
         key: "random-coin",
         items: [
-          { segments: "copper coin", weight: 8, value: 1, meta: { "item" => "coin-copper" } },
-          { segments: "silver coin", weight: 4, value: 10, meta: { "item" => "coin-silver" } },
-          { segments: "electrum coin", weight: 3, value: 100, meta: { "item" => "coin-electrum" } },
-          { segments: "gold coin", weight: 2, value: 1000, meta: { "item" => "coin-gold" } },
-          { segments: "platinum coin", weight: 1, value: 10_000, meta: { "item" => "coin-platinum" } }
+          { segments: "copper coin", weight: 8, value: 1, meta: { "item" => "coin-copper", "material" => "copper" } },
+          { segments: "silver coin", weight: 4, value: 10, meta: { "item" => "coin-silver", "material" => "silver" } },
+          { segments: "electrum coin", weight: 3, value: 100,
+            meta: { "item" => "coin-electrum", "material" => "electrum" } },
+          { segments: "gold coin", weight: 2, value: 1000, meta: { "item" => "coin-gold", "material" => "gold" } },
+          { segments: "platinum coin", weight: 1, value: 10_000,
+            meta: { "item" => "coin-platinum", "material" => "platinum" } }
         ]
       },
       {
@@ -56,8 +58,10 @@ RSpec.describe "Example treasure generation", type: :feature do
         alts: { "1" => { "en" => "a" }, "2" => { "en" => "a pair of" } },
         functions: ["pluralize"],
         items: [
-          { segments: %(a small silver mirror), weight: 4, value: 80, meta: { "item" => "art-silver-mirror" } },
-          { segments: %([2d4-1] silver spoon), weight: 3, value: 40, meta: { "item" => "art-silver-spoon" } }
+          { segments: %(a small silver mirror), weight: 4, value: 80,
+            meta: { "item" => "art-silver-mirror", "material" => "silver" } },
+          { segments: %([2d4-1] silver spoon), weight: 3, value: 40,
+            meta: { "item" => "art-silver-spoon", "material" => "silver" } }
         ]
       }
     ]
@@ -68,6 +72,15 @@ RSpec.describe "Example treasure generation", type: :feature do
     request = Eunomia::Request.new("treasure-container")
     result = request.generate
     expect(result.key).to eq("treasure-container")
+    pp result.to_h
+  end
+
+  it "can filter treasure to only copper or sliver" do
+    Eunomia.add(json)
+    request = Eunomia::Request.new("treasure-container", filters: "material:copper,silver")
+    result = request.generate
+    expect(result.key).to eq("treasure-container")
+    expect(%w[silver copper] & result.meta["material"]).not_to be_empty
     pp result.to_h
   end
 end

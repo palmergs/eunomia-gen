@@ -13,8 +13,8 @@ module Eunomia
     # The current depth (calls to generate) for the run
     attr_reader :depth
 
-    def initialize(key, alts: {}, locale: nil, constants: {}, tags: [], functions: [], unique: false)
-      hsh = { key:, items: ["request"], alts:, constants:, tags:, gen: "sequence", functions: }
+    def initialize(key, alts: {}, locale: nil, constants: {}, filters: [], functions: [], unique: false)
+      hsh = { key:, items: ["request"], alts:, constants:, filters:, gen: "sequence", functions: }
       @unique = unique ? Set.new : nil
       @depth = 0
       @locale = locale
@@ -33,10 +33,10 @@ module Eunomia
       100.times do
         result = gen.generate(self)
         result.apply(alts, functions)
-        return result if !unique || unique.add?(result.to_s)
+        return result if passes_filters?(result) && (!unique || unique.add?(result.to_s))
       end
 
-      raise "Unable to find a unique result"
+      raise "Unable to find a unique result that passes filters"
     end
   end
 end

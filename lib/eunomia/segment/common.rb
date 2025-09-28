@@ -17,6 +17,10 @@ module Eunomia
         Eunomia::Element.new(text, value:, multiplier:)
       end
 
+      def meta_keys
+        Set.new
+      end
+
       def calc; end
     end
   end

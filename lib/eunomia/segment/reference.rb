@@ -30,8 +30,8 @@ module Eunomia
         @generator ||= Eunomia.lookup(key)
       end
 
-      def item_tags
-        generator.item_tags
+      def meta_keys
+        generator.meta_keys
       end
 
       def generate(request)
